@@ -15,6 +15,10 @@ worldquant_api_auth: "https://api.worldquantbrain.com/authentication"
 worldquant_consultant_posts_url: "https://support.worldquantbrain.com/hc/en-us/community/topics/18910956638743-顾问专属中文论坛"
 # You can also choose any other WorldQuant Forum URL you have access to.
 
+# --- WorldQuant Simulation Settings ---
+worldquant_region: "USA"          # Options: USA, GLB, EUR, ASI, CHN
+worldquant_universe: "TOP3000"    # Options: TOP3000, TOP2000U, etc.
+
 # --- Dataset from WorldQuant Brain
 enabled_field_datasets: # Select the field database you want to use to build alphas.
   - pv1                 # Database name reference ./data/wq_fields

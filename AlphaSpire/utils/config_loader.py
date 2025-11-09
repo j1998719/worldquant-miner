@@ -47,6 +47,8 @@ class ConfigLoader:
             "worldquant_api_auth": os.getenv("WORLDQUAN_API_AUTH", yaml_config.get("worldquant_api_auth")),
             "worldquant_consultant_posts_url": os.getenv("WORLDQUANT_CONSULTANT_POSTS_URL",
                                                          yaml_config.get("worldquant_consultant_posts_url")),
+            "worldquant_region": os.getenv("WORLDQUANT_REGION", yaml_config.get("worldquant_region", "USA")),
+            "worldquant_universe": os.getenv("WORLDQUANT_UNIVERSE", yaml_config.get("worldquant_universe", "TOP3000")),
 
             "enabled_field_datasets": yaml_config.get("enabled_field_datasets", [])
         }

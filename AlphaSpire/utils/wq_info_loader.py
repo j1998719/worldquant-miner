@@ -39,140 +39,130 @@ class OpAndFeature:
             raise Exception(f"Authentication failed: {response.text}")
 
     def get_data_fields(self):
-        """Fetch available data fields from WorldQuant Brain across multiple datasets with random sampling."""
-
-        # datasets = ['pv1', 'fundamental6', 'analyst4', 'model16', 'news12']
-
-        datasets = ['analyst4',
-                    'analyst10',
-                    'analyst11',
-                    'analyst14',
-                    'analyst15',
-                    'analyst16',
-                    'analyst35',
-                    'analyst40',
-                    'analyst69',
-                    'earnings3',
-                    'earnings5',
-                    'fundamental17',
-                    'fundamental22',
-                    'fundamental23',
-                    'fundamental28',
-                    'fundamental31',
-                    'fundamental44',
-                    'fundamental6',
-                    'fundamental7',
-                    'fundamental72',
-                    'model109',
-                    'model110',
-                    'model138',
-                    'model16',
-                    'model176',
-                    'model219',
-                    'model238',
-                    'model244',
-                    'model26',
-                    'model262',
-                    'model264',
-                    'model29',
-                    'model30',
-                    'model307',
-                    'model32',
-                    'model38',
-                    'model53',
-                    'model77',
-                    'news12',
-                    'news20',
-                    'news23',
-                    'news52',
-                    'news66',
-                    'other128',
-                    'other432',
-                    'other450',
-                    'other455',
-                    'other460',
-                    'other496',
-                    'other551',
-                    'other553',
-                    'other699',
-                    'other83',
-                    'pv1',
-                    'pv13',
-                    'pv173',
-                    'pv29',
-                    'pv37',
-                    'pv53',
-                    'pv72',
-                    'pv73',
-                    'pv96',
-                    'risk60',
-                    'risk66',
-                    'risk70',
-                    'sentiment21',
-                    'sentiment22',
-                    'sentiment26',
-                    'shortinterest6',
-                    'univ1']
-
-        base_params = {
-            'delay': 1,
-            'instrumentType': 'EQUITY',
-            'limit': 50,
-            'region': 'USA',
-            'universe': 'TOP3000'
-        }
-
+        """
+        Fetch available data fields from WorldQuant Brain.
+        Dynamically discovers available datasets instead of using hardcoded list.
+        """
+        from utils.config_loader import ConfigLoader
+        
+        # Get configuration
+        region = ConfigLoader.get('worldquant_region', 'USA')
+        universe = ConfigLoader.get('worldquant_universe', 'TOP3000')
+        
+        print(f"Fetching data fields for region={region}, universe={universe}")
+        
         try:
-            print("Requesting data fields from multiple datasets...")
-            for dataset in datasets:
-                print("------------" + dataset + "--------------\n")
-                des = str(FIELDS_CSV) + "/" + dataset + ".csv"
-                if Path(des).exists():
-                    print(f"Fields CSV already exists at {des}, skipping download.")
+            # Fetch for both delay values (if supported by region)
+            delays = [1] if region in ["ASI", "CHN"] else [0, 1]
+            
+            for delay in delays:
+                print(f"\n{'='*80}")
+                print(f"Fetching fields with delay={delay}")
+                print(f"{'='*80}")
+                
+                # Step 1: Get available datasets for this configuration
+                datasets_params = {
+                    'delay': delay,
+                    'instrumentType': 'EQUITY',
+                    'region': region,
+                    'universe': universe,
+                    'limit': 50  # API maximum limit
+                }
+                
+                print("Getting available datasets from API...")
+                datasets_response = self.sess.get('https://api.worldquantbrain.com/data-sets', 
+                                                  params=datasets_params)
+                
+                if datasets_response.status_code != 200:
+                    print(f"❌ Failed to get datasets: {datasets_response.status_code}")
+                    print(f"   Response: {datasets_response.text[:500]}")
                     continue
-
-                all_fields = []
-                params = base_params.copy()
-                params['dataset.id'] = dataset
-
-                print(f"Getting field count for dataset: {dataset}")
-                count_response = self.sess.get('https://api.worldquantbrain.com/data-fields', params=params)
-
-                if count_response.status_code == 200:
-                    count_data = count_response.json()
-                    total_fields = count_data.get('count', 0)
-                    print(f"Total fields in {dataset}: {total_fields}")
-
-                    params['limit'] = 50
-
-                    for offset in range(0, total_fields, params['limit']):
+                
+                datasets_data = datasets_response.json()
+                available_datasets = datasets_data.get('results', [])
+                dataset_ids = [ds.get('id') for ds in available_datasets if ds.get('id')]
+                
+                print(f"✅ Found {len(dataset_ids)} available datasets")
+                print(f"   Datasets: {dataset_ids[:20]}...")  # Show first 20
+                
+                # Step 2: Fetch ALL fields from each available dataset
+                for dataset in dataset_ids:
+                    des = FIELDS_CSV / f"{dataset}.csv"
+                    
+                    if des.exists():
+                        print(f"⏭️  {dataset}: Already exists, skipping")
+                        continue
+                    
+                    print(f"📥 {dataset}: ", end='', flush=True)
+                    
+                    all_fields = []
+                    base_params = {
+                        'delay': delay,
+                        'instrumentType': 'EQUITY',
+                        'region': region,
+                        'universe': universe,
+                        'dataset.id': dataset,
+                        'limit': 50,  # API limit
+                        'offset': 0
+                    }
+                    
+                    # Get total count first
+                    count_response = self.sess.get('https://api.worldquantbrain.com/data-fields', 
+                                                   params={**base_params, 'limit': 1})
+                    
+                    if count_response.status_code != 200:
+                        print(f"❌ Failed to get count")
+                        continue
+                    
+                    total_fields = count_response.json().get('count', 0)
+                    print(f"{total_fields} fields", end='', flush=True)
+                    
+                    if total_fields == 0:
+                        print(" [EMPTY]")
+                        # Still create empty CSV
+                        df = pd.DataFrame()
+                        df.to_csv(des, index=False, encoding='utf-8')
+                        continue
+                    
+                    # Fetch all fields with pagination
+                    offset = 0
+                    while offset < total_fields:
+                        params = base_params.copy()
                         params['offset'] = offset
-                        response = self.sess.get('https://api.worldquantbrain.com/data-fields', params=params)
-
+                        params['limit'] = min(50, total_fields - offset)
+                        
+                        response = self.sess.get('https://api.worldquantbrain.com/data-fields', 
+                                               params=params)
+                        
                         if response.status_code == 200:
-                            data = response.json()
-                            fields = data.get('results', [])
-                            print(f"Fetched {len(fields)} fields at offset={offset}")
+                            fields = response.json().get('results', [])
                             all_fields.extend(fields)
+                            offset += len(fields)
+                            print('.', end='', flush=True)
                         else:
-                            print(f"Failed to fetch fields for {dataset} at offset={offset}: {response.text[:500]}")
-                else:
-                    print(f"Failed to get count for {dataset}: {count_response.text[:500]}")
-
-                # 去重
-                unique_fields = {field['id']: field for field in all_fields}.values()
-                unique_fields = list(unique_fields)
-
-                # 保存到 CSV
-                df = pd.DataFrame(unique_fields)
-                df.to_csv(des, index=False, encoding='utf-8')
-                print(f"✅ Saved fields CSV to {des}")
-
-            return
-
+                            print(f" [ERROR at offset {offset}]")
+                            break
+                    
+                    # Remove duplicates
+                    unique_fields = {field['id']: field for field in all_fields}
+                    unique_fields = list(unique_fields.values())
+                    
+                    # Save to CSV
+                    if unique_fields:
+                        df = pd.DataFrame(unique_fields)
+                        df.to_csv(des, index=False, encoding='utf-8')
+                        print(f" ✅ ({len(unique_fields)} unique)")
+                    else:
+                        print(" [NO DATA]")
+            
+            print(f"\n{'='*80}")
+            print("✅ Data fields fetch complete")
+            print(f"{'='*80}\n")
+            
         except Exception as e:
-            print(f"Failed to fetch data fields: {e}")
-            return
+            print(f"❌ Failed to fetch data fields: {e}")
+            import traceback
+            traceback.print_exc()
 
     def get_operators(self) -> List[Dict]:
         """Fetch available operators from WorldQuant Brain."""

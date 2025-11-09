@@ -25,7 +25,7 @@ if __name__ == "__main__":
     
     generate_template_ops()
     generate_template_fields_v2()
-    print("✅ 组件库准备完成")
+    # print("✅ 组件库准备完成")
 
     # ============================================
     # 阶段 2: Alpha 研究（从 helpful_posts 开始）
