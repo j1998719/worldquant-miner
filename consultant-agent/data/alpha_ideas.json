@@ -1,0 +1,14 @@
+[
+  {
+    "idea_id": "idea_001",
+    "hypothesis": "Stocks experiencing a significant increase in insider buying activity alongside a decrease in short interest exhibit a higher probability of outperforming the market over the subsequent 3-month period.",
+    "rationale": "Insider purchases signal management's conviction in the company’s future prospects, often reflecting private information not yet priced into the stock. Simultaneously, declining short interest indicates a reduction in bearish sentiment, suggesting a drying up of short-covering activity. This confluence of positive signals can represent a mispricing opportunity, particularly if the stock was previously facing headwinds. The 3-month timeframe allows for the market to fully absorb the positive information and for momentum to develop.",
+    "suggested_datasets": [
+      "fundamental6",
+      "pv1",
+      "pv13",
+      "model77"
+    ],
+    "timestamp": "2025-11-06T22:49:31.507542"
+  }
+]

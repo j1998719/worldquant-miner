@@ -1,0 +1,20 @@
+[
+  {
+    "expression_id": "expr_001",
+    "expression": "ts_rank((ts_mean(fnd6_eventv110_gdwlid12, 30) - ts_mean(fnd6_eventv110_gdwlid12, 30)) / ts_std_dev(fnd6_eventv110_gdwlid12, 30), 60) * (-1 * ts_rank(ts_delta(fnd6_cimii, 30), 60))",
+    "status": "error",
+    "error": "Simulation timeout",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-06T22:49:47.221376"
+  },
+  {
+    "expression_id": "expr_002",
+    "expression": "ts_rank((ts_delta(fn_payments_to_acquire_businesses_net_of_cash_acquired_a, 3) + ts_delta(fnd6_newa1v1300_at, 3)) / ts_std_dev(fn_payments_to_acquire_businesses_net_of_cash_acquired_a, 6) + ts_std_dev(fnd6_newa1v1300_at, 6), 60)",
+    "status": "error",
+    "error": "Simulation timeout",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-06T22:50:51.588237"
+  }
+]

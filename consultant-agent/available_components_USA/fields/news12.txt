@@ -1,0 +1,973 @@
+================================================================================
+Dataset: news12
+Region: USA
+Total Fields: 322
+Generated: 2025-11-02 19:43:15
+================================================================================
+
+   1. news_all_vwap
+      Volume weighted average price of all sessions
+
+   2. news_atr14
+      14-day Average True Range
+
+   3. news_atr_ratio
+      Ratio of today's range to 20-day average true range
+
+   4. news_cap
+      Reported market capitalization for the calendar day of the session
+
+   5. news_close_vol
+      Main close volume
+
+   6. news_curr_vol
+      Current day's session volume
+
+   7. news_dividend_yield
+      Annual yield
+
+   8. news_eod_close
+      Close price of the session
+
+   9. news_eod_high
+      Highest price reached between the time of news and the end of the session
+
+  10. news_eod_low
+      Lowest price reached between the time of news and the end of the session
+
+  11. news_eod_vwap
+      Volume weighted average price between the time of news and the end of the session
+
+  12. news_eps_actual
+      The actual Earnings Per Share value that was conveyed by the news release
+
+  13. news_high_exc_stddev
+      (EODHigh - TONLast)/StdDev, where StdDev is one standard deviation for the close price for 30 calendar days
+
+  14. news_indx_perf
+      ((EODClose - TONLast) / TONLast) - ((SPYClose - SPYLast) / SPYLast)
+
+  15. news_low_exc_stddev
+      (TONLast - EODLow) / StdDev, where StdDev is one standard deviation for the close price for 30 calendar days
+
+  16. news_ls
+      Whether a long or short position would have been more advantageous: If (EODHigh - Last) > (Last - EODLow) Then LS = 1; If (EODHigh - Last) = (Last - EODLow) Then LS= 0; If (EODHigh - Last) < (Last - EODLow) Then LS = -1.
+
+  17. news_main_vwap
+      Main session volume weighted average price
+
+  18. news_max_dn_amt
+      The price at the time of the news minus the after the news low
+
+  19. news_max_dn_ret
+      Percent change from the price at the time of the news to the after the news low
+
+  20. news_max_up_amt
+      The after the news high minus the price at the time of the news
+
+  21. news_max_up_ret
+      Percent change from the price at the time of the news to the after the news high
+
+  22. news_mins_10_chg
+      The minimum of L or S above for 10-minute bucket
+
+  23. news_mins_10_pct_dn
+      Number of minutes that elapsed before price went down 10 percentage points
+
+  24. news_mins_10_pct_up
+      Number of minutes that elapsed before price went up 10 percentage points
+
+  25. news_mins_1_chg
+      The minimum of L or S above for 1-minute bucket
+
+  26. news_mins_1_pct_dn
+      Number of minutes that elapsed before price went down 1 percentage point
+
+  27. news_mins_1_pct_up
+      Number of minutes that elapsed before price went up 1 percentage point
+
+  28. news_mins_20_chg
+      The minimum of L or S above for 20-minute bucket
+
+  29. news_mins_20_pct_dn
+      Number of minutes that elapsed before price went down 20 percentage points
+
+  30. news_mins_20_pct_up
+      Number of minutes that elapsed before price went up 20 percentage points
+
+  31. news_mins_2_chg
+      The minimum of L or S above for 2-minute bucket
+
+  32. news_mins_2_pct_dn
+      Number of minutes that elapsed before price went down 2 percentage points
+
+  33. news_mins_2_pct_up
+      Number of minutes that elapsed before price went up 2 percentage points
+
+  34. news_mins_3_chg
+      The minimum of L or S above for 3-minute bucket
+
+  35. news_mins_3_pct_dn
+      Number of minutes that elapsed before price went down 3 percentage points
+
+  36. news_mins_3_pct_up
+      Number of minutes that elapsed before price went up 3 percentage points
+
+  37. news_mins_4_chg
+      The minimum of L or S above for 4-minute bucket
+
+  38. news_mins_4_pct_dn
+      Number of minutes that elapsed before price went down 4 percentage points
+
+  39. news_mins_4_pct_up
+      Number of minutes that elapsed before price went up 4 percentage points
+
+  40. news_mins_5_chg
+      The minimum of L or S above for 5-minute bucket
+
+  41. news_mins_5_pct_dn
+      Number of minutes that elapsed before price went down 5 percentage points
+
+  42. news_mins_5_pct_up
+      Number of minutes that elapsed before price went up 5 percentage points
+
+  43. news_mins_7_5_chg
+      The minimum of L or S above for 7.5-minute bucket
+
+  44. news_mins_7_5_pct_dn
+      Number of minutes that elapsed before price went down 7.5 percentage points
+
+  45. news_mins_7_5_pct_up
+      Number of minutes that elapsed before price went up 7.5 percentage points
+
+  46. news_mov_vol
+      30 day moving average session volume
+
+  47. news_open
+      Price at the session open
+
+  48. news_open_gap
+      (DayOpen - PrevClose) / PrevClose
+
+  49. news_open_vol
+      Main open volume
+
+  50. news_pct_10min
+      The percent change in price in the first 10 minutes following the news release
+
+  51. news_pct_120min
+      The percent change in price in the first 120 minutes following the news release
+
+  52. news_pct_1min
+      The percent change in price in the first minute following the news release
+
+  53. news_pct_30min
+      The percent change in price in the first 30 minutes following the news release
+
+  54. news_pct_30sec
+      The percent change in price in the 30 seconds following the news release
+
+  55. news_pct_5_min
+      The percent change in price in the first 5 minutes following the news release
+
+  56. news_pct_60min
+      The percent change in price in the first 60 minutes following the news release
+
+  57. news_pct_90min
+      The percent change in price in the first 90 minutes following the news release
+
+  58. news_pe_ratio
+      Reported price-to-earnings ratio for the calendar day of the session
+
+  59. news_post_vwap
+      Post-session volume-weighted average price
+
+  60. news_pre_vwap
+      Pre-session volume weighted average price
+
+  61. news_prev_close
+      Previous trading day's close price
+
+  62. news_prev_day_ret
+      Percent change between the previous day's open and close
+
+  63. news_prev_vol
+      Previous day's session volume
+
+  64. news_range_stddev
+      (RangeAmt - AvgRange) / RangeStdDev, where AvgRange is the average of the daily range, and RangeStdDev is one standard deviation for the daily range, both for 30 calendar days
+
+  65. news_ratio_vol
+      Curr_Vol / Mov_Vol
+
+  66. news_session_range
+      Session High Price - Session Low Price
+
+  67. news_session_range_pct
+      (Session High Price - Session Low Price) / Session Low Price.
+
+  68. news_short_interest
+      Total number of shares sold short divided by total number of shares outstanding
+
+  69. news_spy_close
+      Price of SPY at close of session
+
+  70. news_spy_last
+      Last Price of the SPY at the time of the news
+
+  71. news_ton_high
+      Highest price reached during the session before the time of news
+
+  72. news_ton_last
+      Price at the time of news
+
+  73. news_ton_low
+      Lowest price reached during the session before the time of the news
+
+  74. news_tot_ticks
+      Total number of ticks for the trading day
+
+  75. news_vol_stddev
+      (CurrentVolume - AvgVol)/VolStDev, where AvgVol is the average of the daily volume, and VolStdDev is one standard deviation for the daily volume, both for 30 calendar days
+
+  76. nws12_afterhsz_01l
+      Number of minutes that elapsed before price went up 10 percentage points
+
+  77. nws12_afterhsz_01p
+      The minimum of L or S above for 10 minute bucket
+
+  78. nws12_afterhsz_01s
+      Number of minutes that elapsed before price went down 10 percentage points
+
+  79. nws12_afterhsz_02l
+      Number of minutes that elapsed before price went up 20 percentage points
+
+  80. nws12_afterhsz_02p
+      The minimum of L or S above for 20-minute bucket
+
+  81. nws12_afterhsz_02s
+      Number of minutes that elapsed before price went down 20 percentage points
+
+  82. nws12_afterhsz_10_min
+      The percent change in price in the first 10 minutes following the news release
+
+  83. nws12_afterhsz_120_min
+      The percent change in price in the first 120 minutes following the news release
+
+  84. nws12_afterhsz_1_minute
+      The percent change in price in the first minute following the news release
+
+  85. nws12_afterhsz_1l
+      Number of minutes that elapsed before price went up 1 percentage points
+
+  86. nws12_afterhsz_1p
+      The minimum of L or S above for 1-minute bucket
+
+  87. nws12_afterhsz_1s
+      Number of minutes that elapsed before price went down 1 percentage point
+
+  88. nws12_afterhsz_2l
+      Number of minutes that elapsed before price went up 2 percentage points
+
+  89. nws12_afterhsz_2p
+      The minimum of L or S above for 2-minute bucket
+
+  90. nws12_afterhsz_2s
+      Number of minutes that elapsed before price went down 2 percentage points
+
+  91. nws12_afterhsz_30_min
+      The percent change in price in the first 30 minutes following the news release
+
+  92. nws12_afterhsz_3l
+      Number of minutes that elapsed before price went up 3 percentage points
+
+  93. nws12_afterhsz_3p
+      The minimum of L or S above for 3-minute bucket
+
+  94. nws12_afterhsz_3s
+      Number of minutes that elapsed before price went down 3 percentage points
+
+  95. nws12_afterhsz_41rta
+      14-day Average True Range
+
+  96. nws12_afterhsz_4l
+      Number of minutes that elapsed before price went up 4 percentage points
+
+  97. nws12_afterhsz_4p
+      The minimum of L or S above for 4-minute bucket
+
+  98. nws12_afterhsz_4s
+      Number of minutes that elapsed before price went down 4 percentage points
+
+  99. nws12_afterhsz_57l
+      Number of minutes that elapsed before price went up 7.5 percentage points
+
+ 100. nws12_afterhsz_57p
+      The minimum of L or S above for 7.5-minute bucket
+
+ 101. nws12_afterhsz_57s
+      Number of minutes that elapsed before price went down 7.5 percentage points
+
+ 102. nws12_afterhsz_5_min
+      The percent change in price in the first 5 minutes following the news release
+
+ 103. nws12_afterhsz_5l
+      Number of minutes that elapsed before price went up 5 percentage points
+
+ 104. nws12_afterhsz_5p
+      The minimum of L or S above for 5-minute bucket
+
+ 105. nws12_afterhsz_5s
+      Number of minutes that elapsed before price went down 5 percentage points
+
+ 106. nws12_afterhsz_60_min
+      The percent change in price in the first 60 minutes following the news release
+
+ 107. nws12_afterhsz_90_min
+      The percent change in price in the first 90 minutes following the news release
+
+ 108. nws12_afterhsz_allticks
+      Total number of ticks for the trading day
+
+ 109. nws12_afterhsz_atrratio
+      Ratio of Today Range to 20-day average true range
+
+ 110. nws12_afterhsz_close_vol
+      Main close volume
+
+ 111. nws12_afterhsz_curr_vol
+      Current day's session volume
+
+ 112. nws12_afterhsz_dayopen
+      Price at the session open
+
+ 113. nws12_afterhsz_div_y
+      Annual yield
+
+ 114. nws12_afterhsz_eodclose
+      Close price of the session
+
+ 115. nws12_afterhsz_eodhigh
+      Highest price reached between the time of news and the end of the session
+
+ 116. nws12_afterhsz_eodlow
+      Lowest price reached between the time of news and the end of the session
+
+ 117. nws12_afterhsz_eodvwap
+      volume weighted average price between the time of news and the end of the session.
+
+ 118. nws12_afterhsz_epsactual
+      The actual Earnings Per Share value that was conveyed by the news release
+
+ 119. nws12_afterhsz_highexcstddev
+      (EODHigh - TONLast)/StdDev, where StdDev is one standard deviation for the close price for 30 calendar days
+
+ 120. nws12_afterhsz_lowexcstddev
+      (TONLast - EODLow) / StdDev, where StdDev is one standard deviation for the close price for 30 calendar days
+
+ 121. nws12_afterhsz_mainvwap
+      Main session volume weighted average price
+
+ 122. nws12_afterhsz_maxdnamt
+      The price at the time of the news minus the after the news low
+
+ 123. nws12_afterhsz_maxdown
+      Percent change from the price at the time of the news to the after the news low
+
+ 124. nws12_afterhsz_maxup
+      Percent change from the price at the time of the news to the after the news high
+
+ 125. nws12_afterhsz_maxupamt
+      The after the news high minus the price at the time of the news
+
+ 126. nws12_afterhsz_mktcap
+      Reported market capitalization for the calendar day of the session
+
+ 127. nws12_afterhsz_mov_vol
+      30-day moving average session volume
+
+ 128. nws12_afterhsz_newrecord
+      Tracks whether the news is first instance or a duplicate
+
+ 129. nws12_afterhsz_newssess
+      Index of the session in which the news was reported
+
+ 130. nws12_afterhsz_open_vol
+      Main open volume
+
+ 131. nws12_afterhsz_opengap
+      (DayOpen - PrevClose) / PrevClose.
+
+ 132. nws12_afterhsz_peratio
+      Reported price to earnings ratio for the calendar day of the session
+
+ 133. nws12_afterhsz_postvwap
+      Post-session volume weighted average price
+
+ 134. nws12_afterhsz_prev_vol
+      Previous day's session volume
+
+ 135. nws12_afterhsz_prevclose
+      Previous trading day's close price
+
+ 136. nws12_afterhsz_prevday
+      Percent change between the previous day's open and close
+
+ 137. nws12_afterhsz_prevwap
+      Pre session volume weighted average price
+
+ 138. nws12_afterhsz_provider
+      index of name of the news provider
+
+ 139. nws12_afterhsz_range
+      Session High Price - Session Low Price) / Session Low Price.
+
+ 140. nws12_afterhsz_rangeamt
+      Session High Price - Session Low Price
+
+ 141. nws12_afterhsz_rangestddev
+      (RangeAmt - AvgRange) / RangeStdDev, where AvgRange is the average of the daily range, and RangeStdDev is one standard deviation for the daily range, both for 30 calendar days
+
+ 142. nws12_afterhsz_reportsess
+      Index of Session on which the spreadsheet is reporting
+
+ 143. nws12_afterhsz_result1
+      Percent change between the price at the time of the news release to the price at the close of the session
+
+ 144. nws12_afterhsz_result2
+      Percent change between the price at the time of the news release to the price at the close of the session
+
+ 145. nws12_afterhsz_result_vs_index
+      ((EODClose - TONLast) / TONLast) - ((SPYClose - SPYLast) / SPYLast)
+
+ 146. nws12_afterhsz_short_interest
+      Total number of shares sold short divided by total number of shares outstanding
+
+ 147. nws12_afterhsz_sl
+      Whether a long or short position would have been more advantageous: If (EODHigh - Last) > (Last - EODLow) Then LS = 1; If (EODHigh - Last) = (Last - EODLow) Then LS = 0; If (EODHigh - Last) < (Last - EODLow) Then LS = -1.
+
+ 148. nws12_afterhsz_spyclose
+      Price of SPY at close of session
+
+ 149. nws12_afterhsz_spylast
+      Last Price of the SPY at the time of the news
+
+ 150. nws12_afterhsz_tonhigh
+      Highest price reached during the session before the time of news
+
+ 151. nws12_afterhsz_tonlast
+      Price at the time of news
+
+ 152. nws12_afterhsz_tonlow
+      Lowest price reached during the session before the time of the news
+
+ 153. nws12_afterhsz_vol_ratio
+      Curr_Vol / Mov_Vol
+
+ 154. nws12_afterhsz_volstddev
+      (CurrentVolume - AvgVol)/VolStDev, where AvgVol is the average of the daily volume, and VolStdDev is one standard deviation for the daily volume, both for 30 calendar days
+
+ 155. nws12_allz_newrecord
+      Tracks whether the news is first instance or a duplicate
+
+ 156. nws12_allz_newssess
+      Index of session in which the news was reported
+
+ 157. nws12_allz_provider
+      index of name of the news provider
+
+ 158. nws12_allz_reportsess
+      Index of Session on which the spreadsheet is reporting
+
+ 159. nws12_allz_result1
+      Percent change between the price at the time of the news release and the price at the close of the session
+
+ 160. nws12_allz_result2
+      Percent change between the price at the time of the news release and the price at the close of the session
+
+ 161. nws12_mainz_01l
+      Number of minutes that elapsed before price went up 10 percentage points
+
+ 162. nws12_mainz_01p
+      The minimum of L or S above for 10-minute bucket
+
+ 163. nws12_mainz_01s
+      Number of minutes that elapsed before price went down 10 percentage points
+
+ 164. nws12_mainz_02l
+      Number of minutes that elapsed before price went up 20 percentage points
+
+ 165. nws12_mainz_02p
+      The minimum of L or S above for 20-minute bucket
+
+ 166. nws12_mainz_02s
+      Number of minutes that elapsed before price went down 20 percentage points
+
+ 167. nws12_mainz_10_min
+      The percent change in price in the first 10 minutes following the news release
+
+ 168. nws12_mainz_120_min
+      The percent change in price in the first 120 minutes following the news release
+
+ 169. nws12_mainz_1_minute
+      The percent change in price in the first minute following the news release
+
+ 170. nws12_mainz_1l
+      Number of minutes that elapsed before price went up 1 percentage point
+
+ 171. nws12_mainz_1p
+      The minimum of L or S above for 1-minute bucket
+
+ 172. nws12_mainz_1s
+      Number of minutes that elapsed before price went down 1 percentage point
+
+ 173. nws12_mainz_2l
+      Number of minutes that elapsed before price went up 2 percentage points
+
+ 174. nws12_mainz_2p
+      The minimum of L or S above for 2 minute bucket
+
+ 175. nws12_mainz_2s
+      Number of minutes that elapsed before price went down 2 percentage points
+
+ 176. nws12_mainz_30_min
+      The percent change in price in the first 30 minutes following the news release
+
+ 177. nws12_mainz_30_seconds
+      The percent change in price in the 30 seconds following the news release
+
+ 178. nws12_mainz_3l
+      Number of minutes that elapsed before price went up 3 percentage points
+
+ 179. nws12_mainz_3p
+      The minimum of L or S above for 3-minute bucket
+
+ 180. nws12_mainz_3s
+      Number of minutes that elapsed before price went down 3 percentage points
+
+ 181. nws12_mainz_41rta
+      14-day Average True Range
+
+ 182. nws12_mainz_4l
+      Number of minutes that elapsed before price went up 4 percentage points
+
+ 183. nws12_mainz_4p
+      The minimum of L or S above for 4 minute bucket
+
+ 184. nws12_mainz_4s
+      Number of minutes that elapsed before price went down 4 percentage points
+
+ 185. nws12_mainz_57l
+      Number of minutes that elapsed before price went up 7.5 percentage points
+
+ 186. nws12_mainz_57p
+      The minimum of L or S above for 7.5-minute bucket
+
+ 187. nws12_mainz_57s
+      Number of minutes that elapsed before price went down 7.5 percentage points
+
+ 188. nws12_mainz_5_min
+      The percent change in price in the first 5 minutes following the news release
+
+ 189. nws12_mainz_5l
+      Number of minutes that elapsed before price went up 5 percentage points
+
+ 190. nws12_mainz_5p
+      The minimum of L or S above for 5-minute bucket
+
+ 191. nws12_mainz_5s
+      Number of minutes that elapsed before price went down 5 percentage points
+
+ 192. nws12_mainz_60_min
+      The percent change in price in the first 60 minutes following the news release
+
+ 193. nws12_mainz_90_min
+      The percent change in price in the first 90 minutes following the news release
+
+ 194. nws12_mainz_allticks
+      Total number of ticks for the trading day
+
+ 195. nws12_mainz_allvwap
+      Volume weighted average price of all sessions
+
+ 196. nws12_mainz_atrratio
+      Ratio of Today Range to 20-day average true range
+
+ 197. nws12_mainz_close_vol
+      Main close volume
+
+ 198. nws12_mainz_curr_vol
+      Current day's session volume
+
+ 199. nws12_mainz_dayopen
+      Price at the session open
+
+ 200. nws12_mainz_div_y
+      Annual yield
+
+ 201. nws12_mainz_eodclose
+      Close price of the session
+
+ 202. nws12_mainz_eodhigh
+      Highest price reached between the time of news and the end of the session
+
+ 203. nws12_mainz_eodlow
+      Lowest price reached between the time of news and the end of the session.
+
+ 204. nws12_mainz_eodvwap
+      Volume weighted average price between the time of news and the end of the session
+
+ 205. nws12_mainz_epsactual
+      The actual Earnings Per Share value that was conveyed by the news release
+
+ 206. nws12_mainz_highexcstddev
+      (EODHigh - TONLast)/StdDev, where StdDev is one standard deviation for the close price for 30 calendar days
+
+ 207. nws12_mainz_lowexcstddev
+      (TONLast - EODLow)/StdDev, where StdDev is one standard deviation for the close price for 30 calendar days
+
+ 208. nws12_mainz_mainvwap
+      Main session volume weighted average price
+
+ 209. nws12_mainz_maxdnamt
+      The price at the time of the news minus the after the news low
+
+ 210. nws12_mainz_maxdown
+      Percent change from the price at the time of the news to the after-the-news low
+
+ 211. nws12_mainz_maxup
+      Percent change from the price at the time of the news to the after the news high
+
+ 212. nws12_mainz_maxupamt
+      The after-the-news high minus the price at the time of the news
+
+ 213. nws12_mainz_mktcap
+      Reported market capitalization for the calendar day of the session
+
+ 214. nws12_mainz_mov_vol
+      30-day moving average session volume
+
+ 215. nws12_mainz_newrecord
+      Tracks whether the news is first instance or a duplicate
+
+ 216. nws12_mainz_newssess
+      Index of session in which the news was reported
+
+ 217. nws12_mainz_open_vol
+      Main open volume
+
+ 218. nws12_mainz_opengap
+      (DayOpen - PrevClose) / PrevClose
+
+ 219. nws12_mainz_peratio
+      Reported price-to-earnings ratio for the calendar day of the session
+
+ 220. nws12_mainz_postvwap
+      Post session volume weighted average price
+
+ 221. nws12_mainz_prev_vol
+      Previous day's session volume
+
+ 222. nws12_mainz_prevclose
+      Previous trading day's close price
+
+ 223. nws12_mainz_prevday
+      Percent change between the previous day's open and close
+
+ 224. nws12_mainz_prevwap
+      Pre session volume weighted average price
+
+ 225. nws12_mainz_provider
+      index of name of the news provider
+
+ 226. nws12_mainz_range
+      Session High Price - Session Low Price) / Session Low Price.
+
+ 227. nws12_mainz_rangeamt
+      Session High Price - Session Low Price
+
+ 228. nws12_mainz_rangestddev
+      (RangeAmt-AvgRange)/RangeStdDev, where AvgRange is the average of the daily range, and RangeStdDev is one standard deviation for the daily range, both for 30 calendar days
+
+ 229. nws12_mainz_reportsess
+      Index of Session on which the spreadsheet is reporting
+
+ 230. nws12_mainz_result1
+      Percent change between the price at the time of the news release and the price at the close of the session
+
+ 231. nws12_mainz_result2
+      Percent change between the price at the time of the news release to the price at the close of the session
+
+ 232. nws12_mainz_result_vs_index
+      ((EODClose - TONLast) / TONLast) - ((SPYClose - SPYLast) / SPYLast)
+
+ 233. nws12_mainz_short_interest
+      Total number of shares sold short divided by total number of shares outstanding
+
+ 234. nws12_mainz_sl
+      Whether a long or short position would have been more advantageous: If (EODHigh - Last) > (Last - EODLow) Then LS = 1; If (EODHigh - Last) = (Last - EODLow) Then LS = 0; If (EODHigh - Last) < (Last - EODLow) Then LS = -1.
+
+ 235. nws12_mainz_spyclose
+      Price of SPY at close of session
+
+ 236. nws12_mainz_spylast
+      Last Price of the SPY at the time of the news
+
+ 237. nws12_mainz_tonhigh
+      Highest price reached during the session before the time of news
+
+ 238. nws12_mainz_tonlast
+      Price at the time of news
+
+ 239. nws12_mainz_tonlow
+      Lowest price reached during the session before the time of the news
+
+ 240. nws12_mainz_vol_ratio
+      Curr_Vol / Mov_Vol
+
+ 241. nws12_mainz_volstddev
+      (CurrentVolume - AvgVol)/VolStDev, where AvgVol is the average of the daily volume, and VolStdDev is one standard deviation for the daily volume, both for 30 calendar days
+
+ 242. nws12_prez_01l
+      Number of minutes that elapsed before price went up 10 percentage points
+
+ 243. nws12_prez_01p
+      The minimum of L or S above for 10-minute bucket
+
+ 244. nws12_prez_01s
+      Number of minutes that elapsed before price went down 10 percentage points
+
+ 245. nws12_prez_02l
+      Number of minutes that elapsed before price went up 20 percentage points
+
+ 246. nws12_prez_02p
+      The minimum of L or S above for 20-minute bucket
+
+ 247. nws12_prez_02s
+      Number of minutes that elapsed before price went down 20 percentage points
+
+ 248. nws12_prez_10_min
+      The percent change in price in the first 10 minutes following the news release
+
+ 249. nws12_prez_120_min
+      The percent change in price in the first 120 minutes following the news release
+
+ 250. nws12_prez_1_minute
+      The percent change in price in the first minute following the news release
+
+ 251. nws12_prez_1l
+      Number of minutes that elapsed before price went up 1 percentage point
+
+ 252. nws12_prez_1p
+      The minimum of L or S above for 1-minute bucket
+
+ 253. nws12_prez_1s
+      Number of minutes that elapsed before price went down 1 percentage point
+
+ 254. nws12_prez_2l
+      Number of minutes that elapsed before price went up 2 percentage points
+
+ 255. nws12_prez_2p
+      The minimum of L or S above for 2-minute bucket
+
+ 256. nws12_prez_2s
+      Number of minutes that elapsed before price went down 2 percentage points
+
+ 257. nws12_prez_30_min
+      The percent change in price in the first 30 minutes following the news release
+
+ 258. nws12_prez_30_seconds
+      The percent change in price in the 30 seconds following the news release
+
+ 259. nws12_prez_3l
+      Number of minutes that elapsed before price went up 3 percentage points
+
+ 260. nws12_prez_3p
+      The minimum of L or S above for 3-minute bucket
+
+ 261. nws12_prez_3s
+      Number of minutes that elapsed before price went down 3 percentage points
+
+ 262. nws12_prez_41rta
+      Fourteen-day Average True Range
+
+ 263. nws12_prez_4l
+      Number of minutes that elapsed before price went up 4 percentage points
+
+ 264. nws12_prez_4p
+      The minimum of L or S above for 4-minute bucket
+
+ 265. nws12_prez_4s
+      Number of minutes that elapsed before price went down 4 percentage points
+
+ 266. nws12_prez_57l
+      Number of minutes that elapsed before price went up 7.5 percentage points
+
+ 267. nws12_prez_57p
+      The minimum of L or S above for 7.5-minute bucket
+
+ 268. nws12_prez_57s
+      Number of minutes that elapsed before price went down 7.5 percentage points
+
+ 269. nws12_prez_5_min
+      The percent change in price in the first 5 minutes following the news release
+
+ 270. nws12_prez_5l
+      Number of minutes that elapsed before price went up 5 percentage points
+
+ 271. nws12_prez_5p
+      The minimum of L or S above for 5-minute bucket
+
+ 272. nws12_prez_5s
+      Number of minutes that elapsed before price went down 5 percentage points
+
+ 273. nws12_prez_60_min
+      The percent change in price in the first 60 minutes following the news release
+
+ 274. nws12_prez_90_min
+      The percent change in price in the first 90 minutes following the news release
+
+ 275. nws12_prez_allticks
+      Total number of ticks for the trading day
+
+ 276. nws12_prez_allvwap
+      Volume weighted average price of all sessions
+
+ 277. nws12_prez_atrratio
+      Ratio of Today Range to 20-day average true range
+
+ 278. nws12_prez_close_vol
+      Main close volume
+
+ 279. nws12_prez_curr_vol
+      Current day's session volume
+
+ 280. nws12_prez_dayopen
+      Price at the session open
+
+ 281. nws12_prez_div_y
+      Annual yield
+
+ 282. nws12_prez_eodclose
+      Close price of the session
+
+ 283. nws12_prez_eodhigh
+      Highest price reached between the time of news and the end of the session
+
+ 284. nws12_prez_eodlow
+      Lowest price reached between the time of news and the end of the session.
+
+ 285. nws12_prez_eodvwap
+      Volume-weighted average price between the time of news and the end of the session
+
+ 286. nws12_prez_epsactual
+      The actual Earnings Per Share value that was conveyed by the news release
+
+ 287. nws12_prez_highexcstddev
+      (EODHigh - TONLast)/StdDev, where StdDev is one standard deviation for the close price for 30 calendar days
+
+ 288. nws12_prez_lowexcstddev
+      (TONLast - EODLow)/StdDev, where StdDev is one standard deviation for the close price for 30 calendar days
+
+ 289. nws12_prez_mainvwap
+      Main session volume-weighted average price
+
+ 290. nws12_prez_maxdnamt
+      The price at the time of the news minus the after the news low
+
+ 291. nws12_prez_maxdown
+      Percent change from the price at the time of the news to the after the news low
+
+ 292. nws12_prez_maxup
+      Percent change from the price at the time of the news to the after the news high
+
+ 293. nws12_prez_maxupamt
+      The after-the-news high minus the price at the time of the news
+
+ 294. nws12_prez_mktcap
+      Reported market capitalization for the calendar day of the session
+
+ 295. nws12_prez_mov_vol
+      30-day moving average session volume
+
+ 296. nws12_prez_newrecord
+      Tracks whether the news is the first instance or a duplicate
+
+ 297. nws12_prez_newssess
+      Index of session in which the news was reported
+
+ 298. nws12_prez_open_vol
+      Main open volume
+
+ 299. nws12_prez_opengap
+      (DayOpen - PrevClose) / PrevClose.
+
+ 300. nws12_prez_peratio
+      Reported price to earnings ratio for the calendar day of the session
+
+ 301. nws12_prez_postvwap
+      Post-session volume-weighted average price
+
+ 302. nws12_prez_prev_vol
+      Previous day's session volume
+
+ 303. nws12_prez_prevclose
+      Previous trading day's close price
+
+ 304. nws12_prez_prevday
+      Percent change between the previous day's open and close
+
+ 305. nws12_prez_prevwap
+      Pre-session volume weighted average price
+
+ 306. nws12_prez_provider
+      index of name of the news provider
+
+ 307. nws12_prez_range
+      Session High Price - Session Low Price) / Session Low Price.
+
+ 308. nws12_prez_rangeamt
+      Session High Price - Session Low Price
+
+ 309. nws12_prez_rangestddev
+      (RangeAmt-AvgRange)/RangeStdDev, where AvgRange is the average of the daily range, and RangeStdDev is one standard deviation for the daily range, both for 30 calendar days
+
+ 310. nws12_prez_reportsess
+      Index of Session on which the spreadsheet is reporting
+
+ 311. nws12_prez_result1
+      Percent change between the price at the time of the news release to the price at the close of the session
+
+ 312. nws12_prez_result2
+      Percent change between the price at the time of the news release to the price at the close of the session
+
+ 313. nws12_prez_result_vs_index
+      ((EODClose - TONLast) / TONLast) - ((SPYClose - SPYLast) / SPYLast)
+
+ 314. nws12_prez_short_interest
+      Total number of shares sold short divided by total number of shares outstanding
+
+ 315. nws12_prez_sl
+      Whether a long or short position would have been more advantageous: If (EODHigh - Last) > (Last - EODLow) Then LS = 1; If (EODHigh - Last) = (Last - EODLow) Then LS = 0; If (EODHigh - Last) < (Last - EODLow) Then LS = -1.
+
+ 316. nws12_prez_spyclose
+      Price of SPY at the close of the session
+
+ 317. nws12_prez_spylast
+      Last Price of the SPY at the time of the news
+
+ 318. nws12_prez_tonhigh
+      Highest price reached during the session before the time of the news
+
+ 319. nws12_prez_tonlast
+      Price at the time of news
+
+ 320. nws12_prez_tonlow
+      Lowest price reached during the session before the time of the news
+
+ 321. nws12_prez_vol_ratio
+      Curr_Vol / Mov_Vol
+
+ 322. nws12_prez_volstddev
+      (CurrentVolume - AvgVol)/VolStDev, where AvgVol is the average of the daily volume, and VolStdDev is one standard deviation for the daily volume, both for 30 calendar days
+

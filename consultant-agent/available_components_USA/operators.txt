@@ -1,0 +1,310 @@
+================================================================================
+WorldQuant Brain - Operators
+Total Operators: 66
+Generated: 2025-11-02 19:43:15
+================================================================================
+
+Note: Operators marked with [WRAPPER] are commonly used to wrap other
+      operators/fields. Example: winsorize(ts_std_dev(close, 60), std=4)
+
+--------------------------------------------------------------------------------
+
+================================================================================
+ARITHMETIC (15 operators)
+================================================================================
+
+  1. abs (UNKNOWN)
+     Definition: abs(x)
+     Description: Absolute value of x
+
+  2. add (UNKNOWN)
+     Definition: add(x, y, filter = false), x + y
+     Description: Add all inputs (at least 2 inputs required). If filter = true, filter all input NaN to 0 before adding
+
+  3. densify (UNKNOWN)
+     Definition: densify(x)
+     Description: Converts a grouping field of many buckets into lesser number of only available buckets so as to make working with grouping fields computationally efficient
+
+  4. divide (UNKNOWN)
+     Definition: divide(x, y), x / y
+     Description: x / y
+
+  5. inverse (UNKNOWN)
+     Definition: inverse(x)
+     Description: 1 / x
+
+  6. log (UNKNOWN)
+     Definition: log(x)
+     Description: Natural logarithm. For example: Log(high/low) uses natural logarithm of high/low ratio as stock weights.
+
+  7. max (UNKNOWN)
+     Definition: max(x, y, ..)
+     Description: Maximum value of all inputs. At least 2 inputs are required
+
+  8. min (UNKNOWN)
+     Definition: min(x, y ..)
+     Description: Minimum value of all inputs. At least 2 inputs are required
+
+  9. multiply (UNKNOWN)
+     Definition: multiply(x ,y, ... , filter=false), x * y
+     Description: Multiply all inputs. At least 2 inputs are required. Filter sets the NaN values to 1
+
+ 10. power (UNKNOWN)
+     Definition: power(x, y)
+     Description: x ^ y
+
+ 11. reverse (UNKNOWN)
+     Definition: reverse(x)
+     Description:  - x
+
+ 12. sign (UNKNOWN)
+     Definition: sign(x)
+     Description: if input > 0, return 1; if input < 0, return -1; if input = 0, return 0; if input = NaN, return NaN;
+
+ 13. signed_power (UNKNOWN)
+     Definition: signed_power(x, y)
+     Description: x raised to the power of y such that final result preserves sign of x
+
+ 14. sqrt (UNKNOWN)
+     Definition: sqrt(x)
+     Description: Square root of x
+
+ 15. subtract (UNKNOWN)
+     Definition: subtract(x, y, filter=false), x - y
+     Description: x-y. If filter = true, filter all input NaN to 0 before subtracting
+
+
+================================================================================
+CROSS SECTIONAL (6 operators)
+================================================================================
+
+  1. normalize (UNKNOWN)
+     Definition: normalize(x, useStd = false, limit = 0.0)
+     Description: Calculates the mean value of all valid alpha values for a certain date, then subtracts that mean from each element
+
+  2. quantile (UNKNOWN)
+     Definition: quantile(x, driver = gaussian, sigma = 1.0)
+     Description: Rank the raw vector, shift the ranked Alpha vector, apply distribution (gaussian, cauchy, uniform). If driver is uniform, it simply subtract each Alpha value with the mean of all Alpha values in the Alpha vector
+
+  3. rank (UNKNOWN)
+     Definition: rank(x, rate=2)
+     Description: Ranks the input among all the instruments and returns an equally distributed number between 0.0 and 1.0. For precise sort, use the rate as 0
+
+  4. scale (UNKNOWN)
+     Definition: scale(x, scale=1, longscale=1, shortscale=1)
+     Description: Scales input to booksize. We can also scale the long positions and short positions to separate scales by mentioning additional parameters to the operator
+
+  5. winsorize (UNKNOWN) [WRAPPER]
+     Definition: winsorize(x, std=4)
+     Description: Winsorizes x to make sure that all values in x are between the lower and upper limits, which are specified as multiple of std.
+
+  6. zscore (UNKNOWN)
+     Definition: zscore(x)
+     Description: Z-score is a numerical measurement that describes a value's relationship to the mean of a group of values. Z-score is measured in terms of standard deviations from the mean
+
+
+================================================================================
+GROUP (6 operators)
+================================================================================
+
+  1. group_backfill (UNKNOWN)
+     Definition: group_backfill(x, group, d, std = 4.0)
+     Description: If a certain value for a certain date and instrument is NaN, from the set of same group instruments, calculate winsorized mean of all non-NaN values over last d days
+
+  2. group_mean (UNKNOWN)
+     Definition: group_mean(x, weight, group)
+     Description: All elements in group equals to the mean
+
+  3. group_neutralize (UNKNOWN)
+     Definition: group_neutralize(x, group)
+     Description: Neutralizes Alpha against groups. These groups can be subindustry, industry, sector, country or a constant
+
+  4. group_rank (UNKNOWN)
+     Definition: group_rank(x, group)
+     Description: Each elements in a group is assigned the corresponding rank in this group
+
+  5. group_scale (UNKNOWN)
+     Definition: group_scale(x, group)
+     Description: Normalizes the values in a group to be between 0 and 1. (x - groupmin) / (groupmax - groupmin)
+
+  6. group_zscore (UNKNOWN)
+     Definition: group_zscore(x, group)
+     Description: Calculates group Z-score - numerical measurement that describes a value's relationship to the mean of a group of values. Z-score is measured in terms of standard deviations from the mean. zscore = (data - mean) / stddev of x for each instrument within its group.
+
+
+================================================================================
+LOGICAL (11 operators)
+================================================================================
+
+  1. and (UNKNOWN)
+     Definition: and(input1, input2)
+     Description: Logical AND operator, returns true if both operands are true and returns false otherwise
+
+  2. equal (UNKNOWN)
+     Definition: input1 == input2
+     Description: Returns true if both inputs are same and returns false otherwise
+
+  3. greater (UNKNOWN)
+     Definition: input1 > input2
+     Description: Logic comparison operators to compares two inputs
+
+  4. greater_equal (UNKNOWN)
+     Definition: input1 >= input2
+     Description: Returns true if input1 >= input2, return false otherwise
+
+  5. if_else (UNKNOWN)
+     Definition: if_else(input1, input2, input 3)
+     Description: If input1 is true then return input2 else return input3.
+
+  6. is_nan (UNKNOWN)
+     Definition: is_nan(input)
+     Description: If (input == NaN) return 1 else return 0
+
+  7. less (UNKNOWN)
+     Definition: input1 < input2
+     Description: If input1 < input2 return true, else return false
+
+  8. less_equal (UNKNOWN)
+     Definition: input1 <= input2
+     Description: Returns true if input1 <= input2, return false otherwise
+
+  9. not (UNKNOWN)
+     Definition: not(x)
+     Description: Returns the logical negation of x. If x is true (1), it returns false (0), and if input is false (0), it returns true (1).
+
+ 10. not_equal (UNKNOWN)
+     Definition: input1!= input2
+     Description: Returns true if both inputs are NOT the same and returns false otherwise
+
+ 11. or (UNKNOWN)
+     Definition: or(input1, input2)
+     Description: Logical OR operator returns true if either or both inputs are true and returns false otherwise
+
+
+================================================================================
+TIME SERIES (24 operators)
+================================================================================
+
+  1. days_from_last_change (UNKNOWN)
+     Definition: days_from_last_change(x)
+     Description: Amount of days since last change of x
+
+  2. hump (UNKNOWN)
+     Definition: hump(x, hump = 0.01)
+     Description: Limits amount and magnitude of changes in input (thus reducing turnover)
+
+  3. kth_element (UNKNOWN)
+     Definition: kth_element(x, d, k)
+     Description: Returns K-th value of input by looking through lookback days. This operator can be used to backfill missing data if k=1
+
+  4. last_diff_value (UNKNOWN)
+     Definition: last_diff_value(x, d)
+     Description: Returns last x value not equal to current x value from last d days
+
+  5. ts_arg_max (UNKNOWN)
+     Definition: ts_arg_max(x, d)
+     Description: Returns the relative index of the max value in the time series for the past d days. If the current day has the max value for the past d days, it returns 0. If previous day has the max value for the past d days, it returns 1
+
+  6. ts_arg_min (UNKNOWN)
+     Definition: ts_arg_min(x, d)
+     Description: Returns the relative index of the min value in the time series for the past d days; If the current day has the min value for the past d days, it returns 0; If previous day has the min value for the past d days, it returns 1.
+
+  7. ts_av_diff (UNKNOWN)
+     Definition: ts_av_diff(x, d)
+     Description: Returns x - tsmean(x, d), but deals with NaNs carefully. That is NaNs are ignored during mean computation
+
+  8. ts_backfill (UNKNOWN) [WRAPPER]
+     Definition: ts_backfill(x,lookback = d, k=1, ignore="NAN")
+     Description: Backfill is the process of replacing the NAN or 0 values by a meaningful value (i.e., a first non-NaN value)
+
+  9. ts_corr (UNKNOWN)
+     Definition: ts_corr(x, y, d)
+     Description: Returns correlation of x and y for the past d days
+
+ 10. ts_count_nans (UNKNOWN)
+     Definition: ts_count_nans(x ,d)
+     Description: Returns the number of NaN values in x for the past d days
+
+ 11. ts_covariance (UNKNOWN)
+     Definition: ts_covariance(y, x, d)
+     Description: Returns covariance of y and x for the past d days
+
+ 12. ts_decay_linear (UNKNOWN)
+     Definition: ts_decay_linear(x, d, dense = false)
+     Description: Returns the linear decay on x for the past d days. Dense parameter=false means operator works in sparse mode and we treat NaN as 0. In dense mode we do not.
+
+ 13. ts_delay (UNKNOWN)
+     Definition: ts_delay(x, d)
+     Description: Returns x value d days ago
+
+ 14. ts_delta (UNKNOWN)
+     Definition: ts_delta(x, d)
+     Description: Returns x - ts_delay(x, d)
+
+ 15. ts_mean (UNKNOWN)
+     Definition: ts_mean(x, d)
+     Description: Returns average value of x for the past d days.
+
+ 16. ts_product (UNKNOWN)
+     Definition: ts_product(x, d)
+     Description: Returns product of x for the past d days
+
+ 17. ts_quantile (UNKNOWN)
+     Definition: ts_quantile(x,d, driver="gaussian" )
+     Description: It calculates ts_rank and apply to its value an inverse cumulative density function from driver distribution. Possible values of driver (optional ) are "gaussian", "uniform", "cauchy" distribution where "gaussian" is the default.
+
+ 18. ts_rank (UNKNOWN)
+     Definition: ts_rank(x, d, constant = 0)
+     Description: Rank the values of x for each instrument over the past d days, then return the rank of the current value + constant. If not specified, by default, constant = 0.
+
+ 19. ts_regression (UNKNOWN)
+     Definition: ts_regression(y, x, d, lag = 0, rettype = 0)
+     Description: Returns various parameters related to regression function
+
+ 20. ts_scale (UNKNOWN) [WRAPPER]
+     Definition: ts_scale(x, d, constant = 0)
+     Description: Returns (x - ts_min(x, d)) / (ts_max(x, d) - ts_min(x, d)) + constant. This operator is similar to scale down operator but acts in time series space
+
+ 21. ts_std_dev (UNKNOWN)
+     Definition: ts_std_dev(x, d)
+     Description: Returns standard deviation of x for the past d days
+
+ 22. ts_step (UNKNOWN)
+     Definition: ts_step(1)
+     Description: Returns days' counter
+
+ 23. ts_sum (UNKNOWN)
+     Definition: ts_sum(x, d)
+     Description: Sum values of x for the past d days.
+
+ 24. ts_zscore (UNKNOWN)
+     Definition: ts_zscore(x, d)
+     Description: Z-score is a numerical measurement that describes a value's relationship to the mean of a group of values. Z-score is measured in terms of standard deviations from the mean: (x - tsmean(x,d)) / tsstddev(x,d). This operator may help reduce outliers and drawdown.
+
+
+================================================================================
+TRANSFORMATIONAL (2 operators)
+================================================================================
+
+  1. bucket (UNKNOWN)
+     Definition: bucket(rank(x), range="0, 1, 0.1" or buckets = "2,5,6,7,10")
+     Description: Convert float values into indexes for user-specified buckets. Bucket is useful for creating group values, which can be passed to GROUP as input
+
+  2. trade_when (UNKNOWN)
+     Definition: trade_when(x, y, z)
+     Description: Used in order to change Alpha values only under a specified condition and to hold Alpha values in other cases. It also allows to close Alpha positions (assign NaN values) under a specified condition
+
+
+================================================================================
+VECTOR (2 operators)
+================================================================================
+
+  1. vec_avg (UNKNOWN)
+     Definition: vec_avg(x)
+     Description: Taking mean of the vector field x
+
+  2. vec_sum (UNKNOWN)
+     Definition: vec_sum(x)
+     Description: Sum of vector field x
+
+

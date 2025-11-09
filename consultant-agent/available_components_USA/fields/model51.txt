@@ -1,0 +1,55 @@
+================================================================================
+Dataset: model51
+Region: USA
+Total Fields: 16
+Generated: 2025-11-02 19:43:15
+================================================================================
+
+   1. beta_last_30_days_spy
+      Beta to SPY in 30 Days
+
+   2. beta_last_360_days_spy
+      Beta to SPY in 360 Days
+
+   3. beta_last_60_days_spy
+      Beta to SPY in 60 Days
+
+   4. beta_last_90_days_spy
+      Beta to SPY in 90 Days
+
+   5. correlation_last_30_days_spy
+      Correlation to SPY in 30 Days
+
+   6. correlation_last_360_days_spy
+      Correlation to SPY in 360 Days
+
+   7. correlation_last_60_days_spy
+      Correlation to SPY in 60 Days
+
+   8. correlation_last_90_days_spy
+      Correlation to SPY in 90 Days
+
+   9. systematic_risk_last_30_days
+      Systematic Risk Last 30 Days
+
+  10. systematic_risk_last_360_days
+      Systematic Risk Last 360 Days
+
+  11. systematic_risk_last_60_days
+      Systematic Risk Last 60 Days
+
+  12. systematic_risk_last_90_days
+      Systematic Risk Last 90 Days
+
+  13. unsystematic_risk_last_30_days
+      Unsystematic Risk Last 30 Days - Relative to SPY
+
+  14. unsystematic_risk_last_360_days
+      Unsystematic Risk Last 360 Days - Relative to SPY
+
+  15. unsystematic_risk_last_60_days
+      Unsystematic Risk Last 60 Days - Relative to SPY
+
+  16. unsystematic_risk_last_90_days
+      Unsystematic Risk Last 90 Days - Relative to SPY
+

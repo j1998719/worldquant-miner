@@ -1,0 +1,102 @@
+You are a quantitative analyst specializing in WorldQuant Brain alpha expressions. Your task is to convert a trading hypothesis into a valid WorldQuant alpha expression.
+
+================================================================================
+TRADING HYPOTHESIS
+================================================================================
+
+HYPOTHESIS: {HYPOTHESIS}
+
+RATIONALE: {RATIONALE}
+
+================================================================================
+AVAILABLE DATA FIELDS
+================================================================================
+
+{AVAILABLE_FIELDS}
+
+================================================================================
+AVAILABLE OPERATORS
+================================================================================
+
+{AVAILABLE_OPERATORS}
+
+================================================================================
+WORLDQUANT SYNTAX RULES
+================================================================================
+
+1. **Basic Structure**:
+   - operator(field, lookback)
+   - operator(expression1, expression2)
+   - Nest operators for complexity: rank(ts_delta(close, 5))
+
+2. **Common Time-Series Operators** (require lookback parameter):
+   - ts_delta(x, d): Change over d days
+   - ts_rank(x, d): Rank over d-day window
+   - ts_std_dev(x, d): Standard deviation over d days
+   - ts_corr(x, y, d): Correlation between x and y over d days
+   - ts_sum(x, d): Sum over d days
+   - ts_mean(x, d): Average over d days
+
+3. **Cross-Sectional Operators**:
+   - rank(x): Cross-sectional rank of x
+   - group_rank(x, group): Rank within groups
+   - group_neutralize(x, group): Remove group averages
+
+4. **Wrappers** (data cleaning):
+   - winsorize(x, std=4): Limit outliers
+   - ts_backfill(x, d): Backfill missing values
+
+5. **Important Constraints**:
+   - Use ONLY fields and operators from the lists above
+   - All ts_* operators MUST have a lookback parameter
+   - Keep complexity under 5 nested levels
+   - Avoid division by zero (add small constants if needed)
+
+================================================================================
+EXAMPLES OF VALID EXPRESSIONS
+================================================================================
+
+Example 1 (Momentum with Volume):
+rank(ts_corr(close, volume, 20) * ts_std_dev(returns, 10))
+→ Combines price-volume correlation with volatility
+
+Example 2 (Mean Reversion):
+-1 * rank(ts_delta(close, 5)) * ts_rank(volume, 20)
+→ Fades recent price moves with high volume
+
+Example 3 (Fundamental Quality):
+rank(ts_delta(fn_def_tax_assets_net_q, 1) / ts_std_dev(fn_def_tax_assets_net_q, 4))
+→ Improving fundamental with low volatility
+
+================================================================================
+COMMON MISTAKES TO AVOID
+================================================================================
+
+❌ BAD: ts_delta(close) → Missing lookback parameter
+✅ GOOD: ts_delta(close, 5)
+
+❌ BAD: rank(fnd_xyz_abc) → Using non-existent field
+✅ GOOD: rank(close) → Use only provided fields
+
+❌ BAD: (close - ts_mean(close, 20)) / ts_std_dev(close, 20)
+✅ GOOD: ts_rank((close - ts_mean(close, 20)) / (ts_std_dev(close, 20) + 0.001), 60)
+→ Add rank wrapper, avoid division by zero
+
+================================================================================
+YOUR TASK
+================================================================================
+
+Convert the hypothesis above into ONE valid WorldQuant expression.
+
+Requirements:
+1. Use ONLY fields from the available fields list
+2. Use ONLY operators from the available operators list
+3. Follow WorldQuant syntax exactly
+4. Keep complexity reasonable (2-3 nested operators)
+5. Include lookback parameters for all ts_* operators
+6. Output ONLY the expression, no explanation
+
+Generate the expression now:
+
+EXPRESSION:
+

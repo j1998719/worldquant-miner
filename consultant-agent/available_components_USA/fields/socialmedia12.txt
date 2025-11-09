@@ -1,0 +1,61 @@
+================================================================================
+Dataset: socialmedia12
+Region: USA
+Total Fields: 18
+Generated: 2025-11-02 19:43:15
+================================================================================
+
+   1. scl12_alltype_buzzvec
+      sentiment volume
+
+   2. scl12_alltype_sentvec
+      sentiment
+
+   3. scl12_alltype_typevec
+      instrument type index
+
+   4. scl12_buzz
+      relative sentiment volume
+
+   5. scl12_buzz_fast_d1
+      relative sentiment volume
+
+   6. scl12_buzzvec
+      sentiment volume
+
+   7. scl12_sentiment
+      sentiment
+
+   8. scl12_sentiment_fast_d1
+      sentiment
+
+   9. scl12_sentvec
+      sentiment
+
+  10. scl12_typevec
+      instrument type index
+
+  11. snt_buzz
+      negative relative sentiment volume, fill nan with 0
+
+  12. snt_buzz_bfl
+      negative relative sentiment volume, fill nan with 1
+
+  13. snt_buzz_bfl_fast_d1
+      negative relative sentiment volume, fill nan with 1
+
+  14. snt_buzz_fast_d1
+      negative relative sentiment volume, fill nan with 0
+
+  15. snt_buzz_ret
+      negative return of relative sentiment volume
+
+  16. snt_buzz_ret_fast_d1
+      negative return of relative sentiment volume
+
+  17. snt_value
+      negative sentiment, fill nan with 0
+
+  18. snt_value_fast_d1
+      negative sentiment, fill nan with 0
+

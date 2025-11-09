@@ -1,0 +1,18 @@
+[
+  {
+    "decision_id": "dec_3963",
+    "expression_id": "expr_001",
+    "decision": "reject",
+    "reason": "API error: Simulation timeout",
+    "next_action": null,
+    "timestamp": "2025-11-06T22:50:52.112213"
+  },
+  {
+    "decision_id": "dec_4105",
+    "expression_id": "expr_002",
+    "decision": "reject",
+    "reason": "API error: Simulation timeout",
+    "next_action": null,
+    "timestamp": "2025-11-06T22:50:52.113235"
+  }
+]

@@ -1,0 +1,58 @@
+================================================================================
+Dataset: sentiment1
+Region: USA
+Total Fields: 17
+Generated: 2025-11-02 19:43:15
+================================================================================
+
+   1. snt1_cored1_score
+      bearish: score < 5, bullish: score > 5, neutral: score in [-5, 5]
+
+   2. snt1_d1_analystcoverage
+      # of analysts providing an earnings estimate
+
+   3. snt1_d1_buyrecpercent
+      Ratio of (Number ofanalyst buy) over (Number ofall analysts)
+
+   4. snt1_d1_downtargetpercent
+      Ratio of (Number ofdown target) over (Number ofall analysts)
+
+   5. snt1_d1_dtstsespe
+      Dispersion among analysts' estimates
+
+   6. snt1_d1_dynamicfocusrank
+      0-100, high values for buy signal and lower values for sell signal
+
+   7. snt1_d1_earningsrevision
+      1 month change in mean of earnings estimate / price
+
+   8. snt1_d1_earningssurprise
+      (Actual earnings - expected earnings) / price
+
+   9. snt1_d1_earningstorpedo
+      (Expected earnings - previous actual earnings) / price
+
+  10. snt1_d1_fundamentalfocusrank
+      0-100, high values for buy signal and lower values for sell signal
+
+  11. snt1_d1_longtermepsgrowthest
+      The median of analyst expected growth in operating earnings
+
+  12. snt1_d1_netearningsrevision
+      Ratio of (Number ofanalyst raising est earnings) - (Number ofanalyst lowering est earnings) over (Number ofall analysts)
+
+  13. snt1_d1_netrecpercent
+      Ratio of (Number ofanalyst buy) - (Number ofanalyst sell) over (Number ofall analysts)
+
+  14. snt1_d1_nettargetpercent
+      Ratio of (Number ofup target) - (Number ofdown target) over (Number ofall analysts)
+
+  15. snt1_d1_sellrecpercent
+      Ratio of (Number ofanalyst sell) over (Number ofall analysts)
+
+  16. snt1_d1_stockrank
+      0-100, high values for buy signal and lower values for sell signal
+
+  17. snt1_d1_uptargetpercent
+      Ratio of (Number ofup target) over (Number ofall analysts)
+

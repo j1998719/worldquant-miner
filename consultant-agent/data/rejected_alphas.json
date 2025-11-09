@@ -1,0 +1,194 @@
+[
+  {
+    "expression": "ts_rank((ts_delta(fn_business_combination_purchase_price_q, 1) + ts_delta(ts_rank(ts_arg_min(fnd6_newqv1300_fcaq, 1), 1), 1)) / (ts_std_dev(fnd6_newqv1300_fcaq, 1) + 0.001), 60) * (-1 * ts_rank(ts_arg_min(fnd6_newqv1300_ppegtq, 1), 1), 60)",
+    "expression_id": "expr_001",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:30:06.738807",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_rank((ts_delta(fnd6_newqv1300_invoq, 30) + 0.001) * inverse(ts_zscore(ts_delta(fnd6_newqv1300_invoq, 30), 60)), 60)",
+    "expression_id": "expr_002",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:30:06.738807",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_rank(ts_corr(fnd6_newqeventv110_cshiq, ts_delta(fn_comp_non_opt_nonvested_number_q, 1), 10), 60)",
+    "expression_id": "expr_001",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:34:56.242921",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_rank((fnd6_prchq / ts_mean(fnd6_prchq, 20)) + (fnd6_newqeventv110_pncidpq / ts_mean(fnd6_newqeventv110_pncidpq, 20)), 60)",
+    "expression_id": "expr_002",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:34:56.242921",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_rank((ts_delta(fnd2_a_sbcpnargmtwfsptepddvdrt, 1) / ts_mean(fnd2_a_sbcpnargmtwfsptepddvdrt, 30)), 60) * ts_std_dev(fn_accum_oth_income_loss_fx_adj_net_of_tax_a, 30)",
+    "expression_id": "expr_001",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:35:50.427939",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "rank(ts_delta(fnd6_newa2v1300_pi, 1) / ts_std_dev(fnd6_newa2v1300_xint, 4)) * rank(ts_delta(fnd6_newa2v1300_txp, 1) / ts_std_dev(fnd6_newa2v1300_icaptq, 4))",
+    "expression_id": "expr_002",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:35:50.427939",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_rank((ts_avg(fnd6_newa2v1300_rdip, 5) - ts_mean(fnd6_ibadj, 20)) / (ts_std_dev(fnd6_ibadj, 20) + 0.001), 60)",
+    "expression_id": "expr_001",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:36:30.596297",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_rank(ts_corr(fnd2_a_frtandfixturesg, fnd6_newqv1300_rectaq, 20), 60) * winsorize(ts_delta(fnd2_a_ltrmdmrepoplay5, 1), std=4)",
+    "expression_id": "expr_002",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:36:30.596297",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "rank(ts_corr(fnd6_newqv1300_tfvlq, ts_delta(fnd6_newqv1300_chq, 1), 20) * (1 - rank(fnd6_epspi / fnd6_newqv1300_tfvlq)))",
+    "expression_id": "expr_001",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:37:15.907168",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_corr(ts_delta(close, 1), rank(fnd6_newqeventv110_pncwiepq, 1), 1) * winsorize(rank(fnd6_newqeventv110_xoptd12, 1), 4)",
+    "expression_id": "expr_002",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:37:15.907168",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_rank((ts_mean(fnd6_cshfd, 60) / ts_mean(fnd6_cshfd, 60)) * (not_equal(fnd6_ptis, 0)), 60)",
+    "expression_id": "expr_001",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:37:55.581169",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_rank((ts_mean(fn_prepaid_expense_q, 1) + ts_mean(fn_payments_to_acquire_businesses_net_of_cash_acquired_q, 1)) / ts_std_dev(fn_prepaid_expense_q, 4) + (ts_mean(fnd6_mfmq_mibtq, 1) + ts_mean(fnd6_reajo, 1)) / ts_std_dev(fnd6_mfmq_mibtq, 4), 60)",
+    "expression_id": "expr_002",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:37:55.581169",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_rank((rank(ts_delta(close, 5)) * (rank(ts_rank(fnd6_ivao, 5)) < quantile(fnd6_che, 0.95))) * (1 - rank(ts_rank(fnd6_ivao, 5))))",
+    "expression_id": "expr_001",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:38:34.513293",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "rank(zscore(ts_delta(fnd6_newqeventv110_ibq, 5), ts_std_dev(fnd6_newqeventv110_ibq, 5))) * zscore(rank(fnd6_newqeventv110_prcepsq / fnd6_newa2v1300_txt, 5), ts_std_dev(fnd6_newqeventv110_prcepsq / fnd6_newa2v1300_txt, 5))",
+    "expression_id": "expr_002",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:38:34.513293",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "rank(ts_corr(fnd6_newqv1300_ibadj12, ts_delta(fnd6_newqv1300_dlcq, 5), 10) * (1 - rank(ts_std_dev(fnd6_newqv1300_rdipepsq, 10))))",
+    "expression_id": "expr_001",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:39:08.996091",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "rank(ts_corr(fnd6_epsfx, normalize(ts_delta(fnd2_a_sbcpnargmpmtwopsffesip, 5)), 5)) * rank(not(ts_std_dev(normalize(ts_delta(fnd2_a_sbcpnargtbysbpmtwpwrr, 5)), 5)))",
+    "expression_id": "expr_002",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-02T20:39:08.996091",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_rank(ts_delta(fnd6_newqeventv110_pncwippq, 5) + ts_rank(fnd6_eventv110_nrtxtepsq, 10), 30)",
+    "expression_id": "expr_001",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-03T00:39:19.851117",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_rank((rank(ts_delta(fnd2_propplteqmuflmfrt, 5)) + 0.001) * (rank(ts_delta(fnd2_a_sbcpnargmpmtwgtm, 5)) + 0.001), 60)",
+    "expression_id": "expr_002",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-03T00:39:19.851117",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_delta(fnd6_aqpl1, 5) * ts_zscore(fnd6_cptnewqeventv110_atq, 60) * (1 - ts_rank(ts_delta(fnd6_aocipen, 5), 60))",
+    "expression_id": "expr_003",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-03T00:39:19.851117",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_rank(power(ts_delta(fnd6_eventv110_wdepsq, 1), 2) * (1 - rank(ts_std_dev(fnd6_cshtr, 20) / rank(fnd6_spceeps, 20))), 60)",
+    "expression_id": "expr_004",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-03T00:39:19.851117",
+    "rejection_reason": "API error: Failed to submit alpha"
+  },
+  {
+    "expression": "ts_scale(rank(ts_corr(fnd6_niadj, fnd6_iints, 30)), 1) * inverse(ts_std_dev(fnd6_cptnewqeventv110_ceqq, 10)) * greater(rank(ts_delta(fnd6_ap, 30)), 0.5)",
+    "expression_id": "expr_001",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-06T22:48:40.864914",
+    "rejection_reason": "API error: Simulation timeout"
+  },
+  {
+    "expression": "ts_rank((ts_sum(fnd6_loc, 60) + ts_sum(fnd6_mfma1_invch, 60)) / (ts_std_dev(fnd6_loc, 60) + 0.001) * (ts_sum(fnd6_new_shares_options_a, 60) + ts_sum(fnd6_newqv1300_spcedq, 60)) / (ts_std_dev(fnd6_new_shares_options_a, 60) + 0.001))",
+    "expression_id": "expr_002",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-06T22:48:40.864914",
+    "rejection_reason": "API error: Simulation timeout"
+  },
+  {
+    "expression": "ts_rank((ts_mean(fnd6_eventv110_gdwlid12, 30) - ts_mean(fnd6_eventv110_gdwlid12, 30)) / ts_std_dev(fnd6_eventv110_gdwlid12, 30), 60) * (-1 * ts_rank(ts_delta(fnd6_cimii, 30), 60))",
+    "expression_id": "expr_001",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-06T22:50:52.118197",
+    "rejection_reason": "API error: Simulation timeout"
+  },
+  {
+    "expression": "ts_rank((ts_delta(fn_payments_to_acquire_businesses_net_of_cash_acquired_a, 3) + ts_delta(fnd6_newa1v1300_at, 3)) / ts_std_dev(fn_payments_to_acquire_businesses_net_of_cash_acquired_a, 6) + ts_std_dev(fnd6_newa1v1300_at, 6), 60)",
+    "expression_id": "expr_002",
+    "sharpe": -999,
+    "fitness": 0,
+    "timestamp": "2025-11-06T22:50:52.118197",
+    "rejection_reason": "API error: Simulation timeout"
+  }
+]

@@ -1,0 +1,76 @@
+================================================================================
+Dataset: pv1
+Region: USA
+Total Fields: 23
+Generated: 2025-11-02 19:43:15
+================================================================================
+
+   1. adv20
+      Average daily volume in past 20 days
+
+   2. cap
+      Daily market capitalization (in millions)
+
+   3. close
+      Daily close price
+
+   4. country
+      Country grouping
+
+   5. currency
+      Currency
+
+   6. cusip
+      CUSIP Value
+
+   7. dividend
+      Dividend
+
+   8. exchange
+      Exchange grouping
+
+   9. high
+      Daily high price
+
+  10. industry
+      Industry grouping
+
+  11. isin
+      ISIN Value
+
+  12. low
+      Daily low price
+
+  13. market
+      Market grouping
+
+  14. open
+      Daily open price
+
+  15. returns
+      Daily returns
+
+  16. sector
+      Sector grouping
+
+  17. sedol
+      Sedol
+
+  18. sharesout
+      Daily outstanding shares (in millions)
+
+  19. split
+      Stock split ratio
+
+  20. subindustry
+      Subindustry grouping
+
+  21. ticker
+      Ticker
+
+  22. volume
+      Daily volume
+
+  23. vwap
+      Daily volume weighted average price
+
