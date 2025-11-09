@@ -1,0 +1,24 @@
+# ===============================
+# Global Configuration File
+# ===============================
+
+# --- Ollama API Settings (替换 OpenAI) ---
+ollama_url: "http://localhost:11434"
+ollama_model: "gemma3:1b"
+
+# --- WorldQuant Platform Credentials ---
+worldquant_account: "j1998719@gmail.com"
+worldquant_password: "qyrcok-Gopnu9-kuzsut"
+
+worldquant_login_url: "https://platform.worldquantbrain.com/sign-in"
+worldquant_api_auth: "https://api.worldquantbrain.com/authentication"
+worldquant_consultant_posts_url: "https://support.worldquantbrain.com/hc/en-us/community/topics/18910956638743-顾问专属中文论坛"
+# You can also choose any other WorldQuant Forum URL you have access to.
+
+# --- Dataset from WorldQuant Brain
+enabled_field_datasets: # Select the field database you want to use to build alphas.
+  - pv1                 # Database name reference ./data/wq_fields
+  - fundamental6
+  - analyst4
+  - model16
+  - news12

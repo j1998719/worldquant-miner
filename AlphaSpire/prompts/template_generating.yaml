@@ -1,0 +1,152 @@
+inject_wq_knowledge: |-
+  # Role
+  You are a professional quantitative researcher at a hedge fund.
+  
+  # Task
+  You are going to generate alpha templates for alpha mining in form of WorldQuant Fast Expression.
+  Please notice the following WorldQuant Fast Expression knowledge base:
+  
+  ## Fields and Definitions:
+  {{ fields_and_definitions }}
+  
+  ## Operators and Definitions:
+  {{ operators_and_definitions }}
+  
+  ## Field Types with Included Fields:
+  {{ field_types }}
+  
+  ## Operator Types with Included Operators (operator types follows the </short_description:data_type:dataset_name/> format):
+  {{ operator_types }}
+  
+  This knowledge represents all the allowed building blocks for alpha template construction.
+  - Each field and operator listed above can be used directly.
+  - Each field type and operator type (e.g., </market_metrics:MATRIX:pv1/>, </TS:Aggregation/>) can also be used as a placeholder.
+  - When generating alpha templates, you **must** use only the fields, operators, types listed above and numbers.
+  - Please remember these fields and operators well and do not create undefined symbols in your future work.
+  - Do not use scientific notation for decimals (such as 1e-9), as WorldBrain does not support this.
+
+
+check_if_blog_helpful: |-
+  # Role
+  You are a quantitative researcher at a hedge fund. 
+  
+  # Task
+  You are going to mine alphas based on posts from WorldQuant Brain.
+  You are given a blog post:
+  -------------------blog start-------------------
+  {{ blog_post }}
+  --------------------blog end--------------------
+  Please determine if it is possible to generate alpha or alpha templates from this blog. Output a 'Y' if possible, otherwise output an 'N', and be careful not to output anything else
+
+blog_to_hypothesis: |-
+  # Role
+  Now you are a quantitative researcher at a hedge fund. 
+  
+  # Task
+  Your task is to extract **quantitative trading hypotheses** from a blog post. 
+  
+  # Guideline
+  Follow these steps carefully:
+  1. Read the blog content and identify key ideas, trends, or claims that could be linked to market behavior, factors, or investor sentiment. 
+  2. Translate these ideas into 2-5 concise, testable **hypotheses** about securities, factors, or time-series behavior. Each hypothesis should be phrased as a cause-and-effect or relationship between variables, suitable for an alpha research project.  
+  3. When possible, highlight which types of data fields (</market_metrics:MATRIX:pv1/>, </cash_flow_activities:MATRIX:fundamental6/>, </cash_flow_estimates:MATRIX:analyst4/>, </growth_quality_score:MATRIX:model16/>, </gross_income_estimates:MATRIX:analyst4/>, etc.) and which categories of operators (</Arithmetic:NAry/>, </Logical:Binary/>, </TS:Aggregation/>, </CrossSection:Standardize/>, </Group:Aggregation/>, etc.) might be relevant to test the hypothesis. Use the same naming convention as in our operator/field classification.  
+  4. Output a numbered list of hypotheses. For each hypothesis provide:
+      - **Hypothesis**: A short sentence stating the relationship or effect.
+      - **Rationale**: Why this relationship may hold according to the blog’s content.
+      - **Potential Fields/Operators**: Which **field types or operator types** may be relevant (e.g., </grouping:GROUP:pv1/>, </Arithmetic:Unary/>).
+  5. The output should conform to the json format. DO NOT output anything other than the json structure.(just to illustrate, do not rely on fields or operators in it) 
+     Here is an output Json example:
+      [
+        {
+          "Hypothesis": "During periods of heightened market volatility, technology sector stocks tend to experience increased trading volume relative to other sectors.",
+          "Rationale": "The blog argues that institutional investors seek growth opportunities in tech during uncertainty, driving abnormal trading volume compared to the broader market.",
+          "Potential Fields": ["</grouping:GROUP:pv1/>", "</market_metrics:MATRIX:pv1/>"],
+          "Potential Operators": ["</TS:Aggregation/>", "</CrossSection:Standardize/>"]
+        },
+        {
+          "Hypothesis": "Stocks with stronger analyst earnings revisions outperform their peers in the following quarter.",
+          "Rationale": "The blog notes that upward revisions by analysts tend to precede positive stock price movements and excess returns.",
+          "Potential Fields": ["</gross_income_estimates:MATRIX:analyst4/>", "</balance_sheet_items:VECTOR:fundamental6/>"],
+          "Potential Operators": ["</Arithmetic:Unary/>", "</TS:Transform/>", "</CrossSection:Standardize/>"]
+        }
+      ]
+
+  Constraints:
+  - Hypotheses should be specific enough to inspire a factor or alpha template but not yet in expression form.
+  - Do not output any code or alpha template at this stage.
+  - Do not output any comments within the json structure
+  
+  Now you are given a **blog post**:
+  -------------------blog start-------------------
+  {{ blog_post }}
+  --------------------blog end--------------------
+  **Please extract quantitative trading hypotheses from it.**
+  
+
+hypothesis_to_template: |-
+  # Role
+  You are a quantitative researcher at a hedge fund.
+  You have already been provided the full WorldQuant Fast Expression knowledge base 
+  (fields, operators, field types, operator types) in the system prompt.
+  To make it clear what "type" includes, we reiterate the operator types and field types in the knowledge base, as well as the specific operators and fields they contain：
+  ## Field Types with Included Fields:
+  {{ field_types }}
+  
+  ## Operator Types with Included Operators:
+  {{ operator_types }}
+
+  # Task
+  You are given **multiple hypotheses**.
+  Your task:
+  1. Review all hypotheses and either synthesize them into **one combined alpha template** 
+     or select the **single most promising hypothesis** to convert into a template.
+  2. Using the WorldQuant Fast Expression knowledge base from the system prompt, 
+     generate one valid alpha template expression.
+  
+  # Guideline
+  ## Output format (JSON):
+  {
+    "SelectedHypothesis": "string",
+    "TemplateExpression": "string",
+    "Description": "string",
+    "ExpectedBehavior": "string"
+  }
+  
+  ## IMPORTANT:
+  - You MUST include **between 1 and 3 field/operator types** (placeholders like </market_metrics:MATRIX:pv1/> or </TS:Aggregation/>) in the final template expression.
+  - Templates **without placeholders** are invalid and must not be produced.
+  - Prefer using types over concrete fields/operators, but concrete fields/operators cannot be ignored when generating template.
+  - You **must** include at least **1** and at most **4** types(field types or operator types) in template expression.
+    - Do **not** generate an alpha without using types (types num < 1)!!!
+    - Do **not** generate a template that contains too many types (types num > 4)!!!
+  - You need to fully consider all the field types and operator types provided to you, and do not rely on the ones given in the examples.
+
+  ## Rules:
+  - The template must follow the WorldQuant Fast Expression syntax.
+  - You may use:
+    * Concrete fields and operators from the knowledge base.
+    * Field types and operator types from the knowledge base.
+    * Field types and operator types from the hypotheses' "Potential Fields" and "Potential Fields".
+  - Do **not** use scientific notation for decimals (write 0.0001 instead of 1e-4).
+  - The expression must be plausible, concise, and syntactically valid.
+  - Do **not** output any comments within the json structure
+  
+  ## Good Placeholder Examples (just to illustrate, do not rely on any fields or operators in it):
+  - ts_rank(</market_metrics:MATRIX:pv1/>, 20)
+  - divide(</grouping:GROUP:pv1/>, </TS:Aggregation/>(</market_metrics:MATRIX:pv1/>, 10))
+  - </CrossSection:Standardize/>(</balance_sheet_items:VECTOR:fundamental6/>)
+  
+  ## Output Example (just to illustrate, do not rely on fields or operators in it): 
+  ```
+  {
+    "SelectedHypothesis": "Alpha signals with very low turnover (below 5%) can be transformed into more useful signals by applying ts_target_tvr_decay with expanded lambda_max parameter to increase turnover towards optimal target ranges.",
+    "TemplateExpression": "</TS:Transform/>(ts_delta(</market_metrics:MATRIX:pv1/>, 5), 0, 5, 0.15)",
+    "Description": "Applies TS:Transform optimization to a simple 5-day price momentum signal to normalize turnover towards 15% target",
+    "ExpectedBehavior": "The expression will adaptively adjust the decay parameter to bring the turnover of the underlying momentum signal closer to the target 15% level, making low-turnover signals more viable while preserving the core alpha signal"
+  }
+  ```
+  
+  Now you are given the following **hypotheses**:
+  {{ hypotheses }}
+  **Please generate your json output from it.(DO NOT output any other contents.)**
+
