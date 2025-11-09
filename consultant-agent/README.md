@@ -31,12 +31,14 @@ IdeaAgent → FactorAgent → SimulationAgent → EvalAgent
 ### 1. Setup Environment
 
 ```bash
+# Create conda environment with Python 3.9
+conda create -n worldquant python=3.9 -y
+
 # Activate conda environment
 conda activate worldquant
 
-# Install dependencies
-pip install requests
-```
+# Install dependencies from requirements.txt
+pip install -r requirements.txt
 
 ### 2. Create Credentials File
 
