@@ -1,7 +1,0 @@
-{
-  "worldquant_consultant_posts_url": "https://support.worldquantbrain.com/hc/en-us/community/topics/12913416465431-%E4%B8%AD%E6%96%87%E8%AE%BA%E5%9D%9B",
-  "openai_base_url": "http://localhost:11434/v1",
-  "openai_api_key": "ollama",
-  "openai_model_name": "qwen2.5:7b"
-}
-

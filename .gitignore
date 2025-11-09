@@ -31,3 +31,5 @@ credentials.json
 credential.json
 
 submitted_alpha.json
+data/
+*.csv
