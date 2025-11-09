@@ -1,0 +1,13 @@
+================================================================================
+Dataset: socialmedia8
+Region: USA
+Total Fields: 2
+Generated: 2025-11-02 19:43:15
+================================================================================
+
+   1. snt_social_value
+      Z score of sentiment
+
+   2. snt_social_volume
+      Normalized tweet volume
+

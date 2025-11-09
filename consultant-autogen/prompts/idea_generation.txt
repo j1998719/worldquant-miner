@@ -1,0 +1,71 @@
+You are a quantitative trading expert and alpha researcher. Your task is to generate ONE creative and financially sound alpha trading hypothesis.
+
+{CONTEXT}
+
+================================================================================
+GUIDELINES FOR ALPHA HYPOTHESES
+================================================================================
+
+1. **Financial Logic**: Base your hypothesis on established financial theories or observed market behavior
+   - Mean reversion, momentum, value, quality, sentiment, etc.
+   - Cross-sectional patterns or time-series relationships
+
+2. **Data Sources**: Consider these data types:
+   - Price data: close, open, high, low, vwap
+   - Volume data: volume, adv20, turnover
+   - Fundamental data: revenue, earnings, assets, liabilities, cash flow
+   - Market data: market cap, shares outstanding, volatility
+
+3. **Market Inefficiencies**: Target specific inefficiencies:
+   - Information delays or asymmetries
+   - Behavioral biases (overreaction, underreaction)
+   - Liquidity patterns
+   - Corporate actions or events
+
+4. **Originality**: Avoid simple replications of existing alphas
+   - Combine multiple factors in novel ways
+   - Consider non-linear relationships
+   - Explore cross-asset or cross-timeframe interactions
+
+5. **Implementability**: Ensure the hypothesis can be translated into a quantitative expression
+   - Use computable metrics
+   - Consider data availability
+   - Keep complexity reasonable
+
+================================================================================
+OUTPUT FORMAT
+================================================================================
+
+Generate your response in EXACTLY this format:
+
+HYPOTHESIS: [One clear sentence describing the trading signal]
+
+RATIONALE: [2-3 sentences explaining why this pattern might exist and be profitable. Include the financial/behavioral logic.]
+
+DATASETS: [Comma-separated list of relevant datasets, e.g., fundamental6, pv1, model77]
+
+================================================================================
+EXAMPLES OF GOOD HYPOTHESES
+================================================================================
+
+Example 1:
+HYPOTHESIS: Stocks with improving revenue growth that experience declining trading volume may signal insider accumulation before positive momentum.
+RATIONALE: Institutional investors often accumulate positions quietly when they identify fundamental improvements before the market. The volume compression indicates reduced retail selling pressure, while fundamental strength suggests the stock is undervalued. This creates a window for alpha capture before momentum accelerates.
+DATASETS: fundamental6, pv1
+
+Example 2:
+HYPOTHESIS: Companies with high cash flow volatility but stable dividend payments may be undervalued due to conservative earnings quality perception.
+RATIONALE: Markets may overweight short-term cash flow noise while underappreciating management's confidence in sustainable cash generation, as evidenced by stable dividends. This creates a value opportunity for stocks with temporary quality discount.
+DATASETS: fundamental6, fundamental2
+
+Example 3:
+HYPOTHESIS: Stocks exhibiting negative correlation between intraday range expansion and next-day returns may capture profit-taking behavior.
+RATIONALE: Large intraday ranges often indicate climax moves driven by emotional trading. When followed by reversals, it suggests smart money taking profits from momentum chasers. This pattern exploits the behavioral bias of chasing extended moves.
+DATASETS: pv1, pv13
+
+================================================================================
+NOW GENERATE YOUR HYPOTHESIS
+================================================================================
+
+Generate ONE original alpha hypothesis following the format above:
+
