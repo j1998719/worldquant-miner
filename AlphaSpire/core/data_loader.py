@@ -17,19 +17,22 @@ OPERATORS_FILE = BASE_DIR / "data" / "wq_operators" / "operators.json"
 class DataLoader:
     """加载和管理 WQ 数据字段和操作符"""
     
-    def __init__(self, enabled_datasets: List[str] = None):
+    def __init__(self, enabled_datasets: List[str] = None, enabled_operators: List[str] = None):
         """
         Args:
             enabled_datasets: 启用的数据集列表，如 ['pv1', 'fundamental6']
                              如果为 None，加载所有数据集
+            enabled_operators: 启用的操作符列表，如 ['rank', 'ts_delta']
+                              如果为 None，加载所有操作符
         """
         self.enabled_datasets = enabled_datasets
+        self.enabled_operators = enabled_operators
         self._operators = None
         self._fields = None
         self._fields_by_dataset = None
     
     def load_operators(self) -> List[Dict]:
-        """加载所有操作符"""
+        """加载操作符（根据 enabled_operators 过滤）"""
         if self._operators is not None:
             return self._operators
         
@@ -37,9 +40,17 @@ class DataLoader:
             raise FileNotFoundError(f"Operators file not found: {OPERATORS_FILE}")
         
         with open(OPERATORS_FILE, 'r', encoding='utf-8') as f:
-            self._operators = json.load(f)
+            all_operators = json.load(f)
         
-        logger.info(f"✅ Loaded {len(self._operators)} operators")
+        # 如果指定了 enabled_operators，只加载这些操作符
+        if self.enabled_operators:
+            enabled_set = set(self.enabled_operators)
+            self._operators = [op for op in all_operators if op['name'] in enabled_set]
+            logger.info(f"✅ Loaded {len(self._operators)} operators (filtered from {len(all_operators)})")
+        else:
+            self._operators = all_operators
+            logger.info(f"✅ Loaded {len(self._operators)} operators")
+        
         return self._operators
     
     def load_fields(self) -> List[Dict]:

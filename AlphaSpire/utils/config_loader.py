@@ -50,12 +50,16 @@ class ConfigLoader:
             "worldquant_region": os.getenv("WORLDQUANT_REGION", yaml_config.get("worldquant_region", "USA")),
             "worldquant_universe": os.getenv("WORLDQUANT_UNIVERSE", yaml_config.get("worldquant_universe", "TOP3000")),
 
-            "enabled_field_datasets": yaml_config.get("enabled_field_datasets", [])
+            "enabled_field_datasets": yaml_config.get("enabled_field_datasets", []),
+            "enabled_operators": yaml_config.get("enabled_operators", [])
         }
 
         # 确保是列表格式
         if not isinstance(self._config["enabled_field_datasets"], list):
             self._config["enabled_field_datasets"] = [self._config["enabled_field_datasets"]]
+        
+        if not isinstance(self._config["enabled_operators"], list):
+            self._config["enabled_operators"] = [self._config["enabled_operators"]]
 
     @classmethod
     def get(cls, key: str, default=None):

@@ -20,15 +20,33 @@ worldquant_region: "USA"          # Options: USA, GLB, EUR, ASI, CHN
 worldquant_universe: "TOP3000"    # Options: TOP3000, TOP2000U, etc.
 
 # --- Dataset from WorldQuant Brain
-# LLM will read COMPLETE content of these datasets for better field selection
-enabled_field_datasets: # Select the field database you want to use to build alphas.
-  - pv1                 # Price/Volume data (Database name reference ./data/wq_fields)
-  - pv13                # Additional Price/Volume data (pv3 不存在，使用 pv13)
+# 只使用核心数据集，避免 prompt 过长
+enabled_field_datasets:
+  - pv1                 # Price/Volume data only
+
+# --- Enabled Operators (常用操作符)
+# 只使用最常见的操作符，避免 LLM 被过多选项淹没
+enabled_operators:
+  - rank                # Cross-sectional rank
+  - ts_rank            # Time-series rank
+  - ts_delta           # Time-series delta/difference
+  - ts_mean            # Time-series mean
+  - ts_sum             # Time-series sum
+  - ts_std_dev         # Time-series standard deviation
+  - ts_corr            # Time-series correlation
+  - ts_decay_linear    # Linear decay
+  - ts_max             # Time-series max
+  - ts_min             # Time-series min
+  - abs                # Absolute value
+  - sign               # Sign function
+  - log                # Natural logarithm
+  - scale              # Scale to [-1, 1]
+  - winsorize          # Winsorize outliers
 
 # --- Alpha Success Criteria ---
 # Based on WorldQuant Brain's grading system
 min_sharpe: 1.25          # Minimum Sharpe ratio (WorldQuant's LOW_SHARPE threshold)
 min_fitness: 1.0          # Minimum fitness score (WorldQuant's LOW_FITNESS threshold)
 max_turnover: 0.7         # Maximum turnover allowed (WorldQuant's HIGH_TURNOVER limit)
-min_turnover: 0.01        # Minimum turnover required (WorldQuant's LOW_TURNOVER limit)
-min_returns: 0.0          # Minimum returns required
+min_turnover: 0.10        # Minimum turnover required (WorldQuant's LOW_TURNOVER limit)
+min_returns: 0.10          # Minimum returns required

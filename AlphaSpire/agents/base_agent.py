@@ -150,7 +150,7 @@ class BaseAgent(ABC):
     @staticmethod
     def format_operators_list(operators_data: List[Dict]) -> str:
         """
-        格式化 operators 列表为详细的文本
+        格式化 operators 列表为简洁的文本（优化版）
         
         Args:
             operators_data: operators.json 的完整数据
@@ -162,24 +162,23 @@ class BaseAgent(ABC):
             return "No operators available"
         
         text = f"=== Available Operators ({len(operators_data)} total) ===\n"
-        text += "Each operator with its definition and parameters:\n\n"
+        text += "Use EXACT operator names. Common syntax:\n\n"
         
+        # 简化显示：只显示名称和简短定义
         for op in operators_data:
             name = op.get('name', 'unknown')
             definition = op.get('definition', name)
-            description = op.get('description', '')
-            
-            text += f"- {definition}"
-            if description:
-                text += f"\n  Description: {description}"
-            text += "\n"
+            # 只保留第一行定义（去掉描述）
+            short_def = definition.split('\n')[0] if '\n' in definition else definition
+            text += f"- **{name}**: {short_def}\n"
         
+        text += "\n"
         return text
     
     @staticmethod
     def format_fields_list(fields_data: List[Dict], dataset_names: List[str] = None) -> str:
         """
-        格式化 fields 列表为详细的文本
+        格式化 fields 列表为简洁的文本（优化版）
         
         Args:
             fields_data: fields 的完整数据列表
@@ -193,43 +192,18 @@ class BaseAgent(ABC):
         
         text = f"=== Available Fields ({len(fields_data)} total"
         if dataset_names:
-            text += f" from datasets: {', '.join(dataset_names)}"
-        text += ") ===\n"
+            text += f" from {', '.join(dataset_names)}"
+        text += ") ===\n\n"
         
-        # 按数据集分组（如果有 dataset 信息）
-        by_dataset = {}
-        no_dataset = []
+        # 提取所有字段 ID
+        field_ids = [f.get('id', f.get('name', 'unknown')) for f in fields_data]
         
-        for field in fields_data:
-            dataset_obj = field.get('dataset', None)
-            if dataset_obj:
-                # dataset 是一个 dict，提取其 id
-                dataset_id = dataset_obj.get('id', None) if isinstance(dataset_obj, dict) else dataset_obj
-                if dataset_id:
-                    if dataset_id not in by_dataset:
-                        by_dataset[dataset_id] = []
-                    by_dataset[dataset_id].append(field)
-                else:
-                    no_dataset.append(field)
-            else:
-                no_dataset.append(field)
+        # 简洁显示：每行25个字段
+        text += "Field IDs (use EXACT names):\n"
+        for i in range(0, len(field_ids), 25):
+            batch = field_ids[i:i+25]
+            text += f"  {', '.join(batch)}\n"
         
-        # 按数据集显示
-        for dataset, dataset_fields in sorted(by_dataset.items()):
-            text += f"\n--- {dataset.upper()} Fields ({len(dataset_fields)} fields) ---\n"
-            field_names = [f.get('id', f.get('name', 'unknown')) for f in dataset_fields]
-            # 分行显示，每行20个
-            for i in range(0, len(field_names), 20):
-                batch = field_names[i:i+20]
-                text += f"  {', '.join(batch)}\n"
-        
-        # 如果有未分类的字段
-        if no_dataset:
-            text += f"\n--- Other Fields ({len(no_dataset)} fields) ---\n"
-            field_names = [f.get('id', f.get('name', 'unknown')) for f in no_dataset]
-            for i in range(0, len(field_names), 20):
-                batch = field_names[i:i+20]
-                text += f"  {', '.join(batch)}\n"
-        
+        text += "\n"
         return text
 

@@ -31,25 +31,40 @@ python alpha_miner.py
 
 ---
 
-## 📊 工作流程
+## 📊 工作流程（迭代优化版）
 
 ```
-生成假设 → 设计表达式 → 提交模拟 → 检查结果 → 决策
-   ↑                                              ↓
-   └──────────────────────────────────────────────┘
+从 hopeful_alphas 选择表达式 → 提交模拟 → 检查结果 → 决策
+   ↑                                                 ↓
+   └─────────────────────────────────────────────────┘
 ```
+
+### 🔄 **核心改进：不再依赖 LLM 生成假设！**
+
+- **旧方式**：LLM 生成假设 → LLM 设计表达式（创造力不足，重复率高）
+- **新方式**：从 `hopeful_alphas.json` 的优化建议中**直接提取表达式**（基于成功案例的迭代优化）
+
+每个 `hopeful_alphas.json` 的 alpha 都包含多个 `optimization_suggestions`，例如：
+```json
+{
+  "direction": "Add volume confirmation",
+  "expression_example": "-ts_rank(close, 5) * rank(ts_delta(volume, 5))"
+}
+```
+
+系统会从所有 `expression_example` 中随机选择，确保多样性和可行性。
 
 ### 决策逻辑（Rule-based）
 
-1. **✅ Sharpe > 1.0** → 添加到 `hopeful_alphas.json`，生成新假设
-2. **🔄 Sharpe < -1.0** → 反转表达式 (`-1 * expr`)，添加到 `hopeful_alphas.json`，生成新假设
-3. **❌ |Sharpe| < 1.0** → 放弃，生成新假设
+1. **✅ Sharpe > 1.0** → 调用 `EvaluatorAgent` 分析，添加到 `hopeful_alphas.json`
+2. **🔄 Sharpe < -1.0** → 反转表达式 (`-1 * expr`)，调用 `EvaluatorAgent` 分析，添加到 `hopeful_alphas.json`
+3. **❌ |Sharpe| < 1.0** → 放弃，选择新表达式
 
 ### 防重复机制
 
 - ✅ 所有尝试过的 `expression` 记录在 `all_expressions`
-- ✅ 重复 expression 会被立即拒绝
-- ✅ 所有 hypothesis 记录在 `results/hypothesis.json`
+- ✅ 重复 expression 会被立即过滤
+- ✅ 所有提交记录在 `results/history.json`
 
 ---
 
@@ -77,10 +92,10 @@ AlphaSpire/
 ├── run.sh                  # 🏃 启动脚本
 │
 ├── agents/                 # 🤖 Multi-Agent 系统
-│   ├── hypothesis_agent.py
-│   ├── alpha_designer_agent.py
-│   ├── evaluator_agent.py
-│   └── optimizer_agent.py
+│   ├── alpha_designer_agent.py    # 从 hopeful_alphas 提取表达式
+│   ├── metrics_analyzer.py        # 分析性能指标
+│   ├── expression_analyzer.py     # 分析表达式结构
+│   └── suggestion_generator.py    # 生成优化建议
 │
 ├── core/                   # 🏗️  核心组件
 │   ├── wq_api.py          # WorldQuant API
@@ -107,7 +122,7 @@ chmod +x run.sh
 ```
 
 ### 方法 3：后台运行
-```bash
+    ```bash
 nohup python alpha_miner.py > output.log 2>&1 &
 tail -f alpha_miner.log
 ```
@@ -120,19 +135,43 @@ tail -f alpha_miner.log
 
 ### 核心输出文件（都在 `results/` 目录下）
 
-1. **`results/hopeful_alphas.json`** - 有希望的 Alpha 表达式
+1. **`results/hopeful_alphas.json`** ⭐ **最重要的文件**
    - 记录所有 Sharpe > 1.0 或 Sharpe < -1.0 的 alphas
-   - 包含完整的分析：经济原理、优化建议、推荐的 operators/fields/params
-   - 供 `alpha_designer_agent` 学习参考
+   - 新的简化格式（3-Stage 分析结果）：
+     ```json
+     {
+       "expression": "alpha expression",
+       "result": {...},
+       "analysis": {
+         "metrics": {
+           "performance_grade": "excellent|good|fair|poor",
+           "key_strengths": [...],
+           "key_weaknesses": [...],
+           "improvement_priority": "sharpe|fitness|turnover"
+         },
+         "expression": {
+           "strategy_type": "momentum|mean_reversion|...",
+           "signal_mechanism": "...",
+           "economic_rationale": "...",
+           "key_operators": [...],
+           "key_fields": [...]
+         },
+         "suggested_expressions": [
+           {
+             "direction": "What to improve",
+             "expression": "Concrete alpha expression",
+             "rationale": "Why this helps"
+           }
+         ]
+       }
+     }
+     ```
+   - **系统从 `suggested_expressions` 中提取新表达式进行测试**（迭代优化的核心）
 
 2. **`results/history.json`** - 完整历史记录
    - 实时保存每个 iteration 的详细信息
-   - 包含：hypothesis、expression、result、decision
+   - 包含：expression、result、decision
    - 可用于复盘和分析
-
-3. **`results/hypothesis.json`** - 所有生成的假设
-   - 记录每个 hypothesis 及其推荐的 operators/fields/params
-   - 避免生成重复或类似的假设
 
 ---
 
@@ -143,38 +182,42 @@ tail -f alpha_miner.log
 ✅ Model gemma3:1b loaded and ready
 
 🚀 Alpha Miner Started
-🎯 WorldQuant Success Criteria:
+🎯 WorldQuant Success Criteria (MUST meet ALL to stop):
    Sharpe >= 1.25
    Fitness >= 1.0
-   0.01 <= Turnover <= 0.7
+   0.1 <= Turnover <= 0.7
+   Returns >= 0.1
+
+♾️  Unlimited iterations (will run until success)
 ================================================================================
 
-📍 Iteration 1/100
+📍 Iteration 1
 ================================================================================
 
-🧠 Step 1: Generating Hypothesis...
-✅ Hypothesis: Stocks with strong earnings revisions outperform
+🎨 Step 1: Selecting Expression from Hopeful Alphas...
+✅ Expression selected: -ts_rank(close, 5) * rank(ts_delta(volume, 5))
+   Source: hopeful_alphas_optimization_suggestions
 
-🎨 Step 2: Designing Alpha Expression...
-✅ Expression: rank(ts_delta(est_netprofit, 21))
+⚙️ Step 2: Submitting Simulation...
+⏳ Waiting for simulation to complete...
+✅ Simulation complete: mL36OVEp
 
-⚙️ Step 3: Submitting Simulation...
 📊 Results:
-  Sharpe:   0.723 (target >= 1.25)
-  Fitness:  0.651 (target >= 1.00)
-  Turnover: 0.185 (target 0.01-0.70)
-  🔧 Hopeful - worth optimizing
+  Sharpe:   1.423 (target >= 1.25)
+  Fitness:  1.201 (target >= 1.00)
+  Turnover: 0.612 (target 0.01-0.70)
+  Returns:  0.115
+  ✅ Sharpe > 1.0 → HOPEFUL!
 
-📈 Step 4: Evaluating Results...
-✅ Decision: OPTIMIZE
+📈 Step 4: Rule-based Decision...
+✅ HOPEFUL! Sharpe > 1.0
+   Analyzing alpha...
+✅ Added to hopeful_alphas.json (total: 5)
 
 ...
 
-🎉 SUCCESS! Found a good alpha!
-Expression: zscore(rank(ts_delta(est_netprofit, 21)))
-Sharpe: 1.287
-Fitness: 1.034
-Iterations: 8
+🎉 SUCCESS! Multiple hopeful alphas found!
+Check results/hopeful_alphas.json for details.
 ```
 
 ---
@@ -183,7 +226,7 @@ Iterations: 8
 
 ### 基本配置
 
-```yaml
+    ```yaml
 # Ollama 模型
 ollama_model: "gemma3:1b"      # 默认（快）
 # ollama_model: "qwen2.5:14b"  # 推荐（质量好）
@@ -210,11 +253,11 @@ optimize_min_fitness: 0.6
 # 启用的数据集
 enabled_field_datasets:
   - pv1
-  - fundamental6
-  - analyst4
-  - model16
-  - news12
-```
+      - fundamental6
+      - analyst4
+      - model16
+      - news12   
+    ```
 
 ---
 
@@ -222,7 +265,7 @@ enabled_field_datasets:
 
 程序启动时会**自动预加载模型**：
 
-```bash
+       ```bash
 # 自动执行（无需手动操作）
 ollama run gemma3:1b
 # 发送 /bye 命令
@@ -273,19 +316,50 @@ ollama run gemma3:1b
 
 ---
 
-## 🤖 Multi-Agent 架构
+## 🤖 Agent 架构（3-Stage 分析流水线）
 
-### Hypothesis Agent
-生成投资假设，避免重复失败的想法
+### Alpha Designer Agent（表达式选择器）
+- **不再使用 LLM 生成**，直接从 `hopeful_alphas.json` 提取表达式
+- 从所有 `suggested_expressions` 中随机选择
+- 确保不重复已尝试的表达式
+- **优势**：基于成功案例的迭代优化，避免 LLM 创造力不足
 
-### Alpha Designer Agent
-将假设转换为 FastExpr 表达式，只使用有效的 operators/fields
+### 分析流水线（仅在 Sharpe > 1.0 或 < -1.0 时触发）
 
-### Evaluator Agent
-评估结果并决定：ACCEPT / OPTIMIZE / NEW_HYPOTHESIS
+#### Stage 1: Metrics Analyzer（性能指标分析）
+- 分析 Sharpe, Fitness, Turnover, Returns
+- **理解 Fitness 公式**：`Fitness = Sharpe * abs(Returns) / Turnover`
+- 对比实际值与 `config.yaml` 中的成功标准
+- 识别优势和劣势
+- 确定优化优先级（sharpe|fitness|turnover）
+- 输出：`performance_grade`, `key_strengths`, `key_weaknesses`, `improvement_priority`
 
-### Optimizer Agent
-针对性优化表达式（turnover → 加 rank, sharpe → 加 zscore）
+#### Stage 2: Expression Analyzer（表达式结构分析）
+- 分析表达式的 operators 和 fields 组合
+- 识别策略类型（momentum, mean_reversion, value, etc.）
+- 推测信号生成机制和经济原理
+- 输出：`strategy_type`, `signal_mechanism`, `economic_rationale`, `key_operators`, `key_fields`
+
+#### Stage 3: Suggestion Generator（优化建议生成）
+- 综合前两阶段的分析结果
+- 生成 3-5 个具体的优化建议
+- 每个建议包含：优化方向、具体表达式、优化原理
+- 输出：`suggested_expressions` (数组，每个包含 `direction`, `expression`, `rationale`)
+
+### 决策逻辑（Rule-based，不使用 LLM）
+- `Sharpe > 1.0` → 3-Stage 分析 → 添加到 hopeful_alphas → **检查是否满足所有 criteria**
+- `Sharpe < -1.0` → 反转 → 3-Stage 分析 → 添加到 hopeful_alphas → **检查是否满足所有 criteria**
+- `|Sharpe| < 1.0` → 放弃
+
+### 停止条件（自动成功检测）
+程序会**无限循环**，直到找到满足**所有**成功标准的 alpha：
+```python
+✅ Sharpe   >= 1.25
+✅ Fitness  >= 1.0
+✅ Turnover: 0.1 - 0.7
+✅ Returns  >= 0.1
+```
+一旦找到，程序自动停止并显示成功消息 🎉
 
 ---
 
@@ -324,7 +398,7 @@ miner.run(
 ```
 
 ### 监控进度
-```bash
+       ```bash
 # 实时日志
 tail -f alpha_miner.log
 
