@@ -1,6 +1,6 @@
 """
 Evaluator Agent
-负责评估 Alpha 结果并决定下一步行动
+负责分析 Alpha 的经济意涵和优化方向
 """
 from typing import Dict, Any
 from .base_agent import BaseAgent
@@ -9,35 +9,60 @@ from .base_agent import BaseAgent
 class EvaluatorAgent(BaseAgent):
     """
     评估 Agent
-    评估模拟结果并决定是优化还是生成新假设
+    分析 alpha 的经济意涵、有效原因和优化方向
+    注意：不负责决策（决策由 rule-based 逻辑处理）
     """
     
     def __init__(self, **kwargs):
-        system_prompt = """You are an expert quantitative analyst evaluating alpha performance.
+        system_prompt = """You are an expert in analyzing quantitative trading alphas.
 
-Your task is to:
-1. Analyze simulation results
-2. Identify what works and what doesn't
-3. Decide whether to optimize the current alpha or generate a new hypothesis
+Your task is to analyze alpha expressions and explain:
+1. **Economic Rationale**: Why does this alpha work? What market behavior does it capture?
+2. **Signal Mechanism**: How does the expression translate to trading signals?
+3. **Optimization Directions**: Suggest concrete improvements using FastExpr operators
 
-Evaluation criteria (WorldQuant Brain's grading system):
-- Sharpe Ratio >= 1.25 (LOW_SHARPE threshold)
-- Fitness >= 1.0 (LOW_FITNESS threshold)
-- Turnover: 0.01 <= turnover <= 0.7 (LOW/HIGH_TURNOVER limits)
-- Returns > 0
-
-Decision logic:
-- If ALL criteria met: ACCEPT (stop iteration)
-- If Sharpe >= 0.5 and Fitness >= 0.6 ("hopeful"): OPTIMIZE (try to improve)
-- If Sharpe < 0.5 or major issues: NEW_HYPOTHESIS (start fresh)
+Focus on:
+- Market microstructure (momentum, mean-reversion, volatility)
+- Factor interactions (how different data fields combine)
+- Timing and decay (signal persistence)
 
 Output format (JSON):
 {
-  "decision": "ACCEPT" | "OPTIMIZE" | "NEW_HYPOTHESIS",
-  "analysis": "Detailed analysis of the results",
-  "strengths": ["what works well"],
-  "weaknesses": ["what needs improvement"],
-  "recommendation": "Specific recommendation for next step"
+  "economic_rationale": "Why this alpha works (e.g., captures momentum decay)",
+  "signal_mechanism": "How the expression generates signals",
+  "strengths": ["what makes this alpha effective"],
+  "weaknesses": ["potential issues or limitations"],
+  "recommended_operators": ["op1", "op2", ...],
+  "recommended_fields": ["field1", "field2", ...],
+  "recommended_params": {"param_name": "suggested value or range"},
+  "optimization_suggestions": [
+    {
+      "direction": "Brief description",
+      "expression_example": "Concrete FastExpr example"
+    }
+  ]
+}
+
+Example:
+For `rank(ts_delta(close, 21))`:
+{
+  "economic_rationale": "Captures 21-day price momentum, exploiting short-term trend persistence",
+  "signal_mechanism": "Ranks stocks by price change, buying recent winners and selling losers",
+  "strengths": ["Simple and interpretable", "Low turnover"],
+  "weaknesses": ["May suffer in choppy markets", "No volatility adjustment"],
+  "recommended_operators": ["rank", "ts_delta", "ts_mean", "ts_std_dev"],
+  "recommended_fields": ["close", "volume", "vwap"],
+  "recommended_params": {"lookback": "10-30 days", "decay": "0-3"},
+  "optimization_suggestions": [
+    {
+      "direction": "Add volatility normalization",
+      "expression_example": "rank(ts_delta(close, 21) / ts_std_dev(close, 21))"
+    },
+    {
+      "direction": "Combine with volume confirmation",
+      "expression_example": "rank(ts_delta(close, 21)) * rank(ts_delta(volume, 21))"
+    }
+  ]
 }"""
         
         super().__init__(
@@ -48,113 +73,108 @@ Output format (JSON):
     
     def execute(self, context: Dict[str, Any]) -> Dict[str, Any]:
         """
-        评估 Alpha 结果
+        分析 Alpha 表达式
         
         Args:
             context: {
-                'result': AlphaResult,  # 模拟结果
                 'expression': str,  # Alpha 表达式
-                'hypothesis': Dict,  # 原始假设
-                'iteration': int,  # 当前迭代次数
+                'result': AlphaResult,  # 模拟结果
+                'hypothesis': Dict,  # 原始假设（可选）
             }
         
         Returns:
             {
                 'success': bool,
-                'evaluation': Dict,
+                'analysis': Dict,  # 包含 economic_rationale, optimization_suggestions 等
                 'error': str (if failed)
             }
         """
-        result = context.get('result')
         expression = context.get('expression', '')
+        result = context.get('result')
         hypothesis = context.get('hypothesis', {})
-        iteration = context.get('iteration', 0)
+        operators_data = context.get('operators_data', [])
+        fields_data = context.get('fields_data', [])
+        enabled_datasets = context.get('enabled_datasets', [])
         
-        if not result:
+        if not expression:
             return {
                 'success': False,
-                'evaluation': None,
-                'error': 'No result provided'
+                'analysis': None,
+                'error': 'No expression provided'
             }
         
+        # 格式化完整的 operators 和 fields
+        ops_text = self.format_operators_list(operators_data) if operators_data else ""
+        fields_text = self.format_fields_list(fields_data, enabled_datasets) if fields_data else ""
+        
         # 构建 prompt
-        prompt = f"""Alpha Expression: {expression}
+        prompt = f"""=== Alpha Expression ===
+{expression}
 
-Hypothesis: {hypothesis.get('hypothesis', 'N/A')}
-
-Simulation Results:
+=== Performance Metrics ===
 - Sharpe: {result.sharpe:.3f}
 - Fitness: {result.fitness:.3f}
 - Turnover: {result.turnover:.3f}
 - Returns: {result.returns:.3f}
-- Drawdown: {result.drawdown:.3f}
-- Success: {result.success}
-{f'- Error: {result.error_message}' if result.error_message else ''}
 
-Current iteration: {iteration}
+=== Original Hypothesis ===
+{hypothesis.get('hypothesis', 'N/A')}
 
-Analyze these results and decide:
-1. ACCEPT - if meets ALL WorldQuant criteria (Sharpe >= 1.25, Fitness >= 1.0, 0.01 <= Turnover <= 0.7)
-2. OPTIMIZE - if "hopeful" but needs improvement (Sharpe >= 0.5, Fitness >= 0.6)
-3. NEW_HYPOTHESIS - if fundamental issues (Sharpe < 0.5 or failed)
+{ops_text}
 
-Output ONLY valid JSON with your decision and analysis."""
+{fields_text}
+
+IMPORTANT: recommended_fields MUST be from the available fields list above!
+IMPORTANT: recommended_operators MUST be from the available operators list above!
+
+Analyze this alpha expression. Explain its economic rationale, how it generates signals, and suggest concrete optimization directions using ONLY available operators and fields.
+
+Output ONLY valid JSON with your analysis."""
         
         # 调用 LLM
-        response = self.call_llm(prompt, format_json=True, num_predict=800)
+        response = self.call_llm(prompt, format_json=True, num_predict=1000)
         
         if not response:
-            # 如果 LLM 失败，使用规则基础的评估
-            return self._fallback_evaluation(result, iteration)
+            # Fallback: 简单分析
+            return self._fallback_analysis(expression, result)
         
         # 解析 JSON
-        evaluation = self.parse_json_response(response)
+        analysis = self.parse_json_response(response)
         
-        if not evaluation or 'decision' not in evaluation:
-            # JSON 解析失败，使用 fallback
-            return self._fallback_evaluation(result, iteration)
+        if not analysis:
+            # Fallback
+            return self._fallback_analysis(expression, result)
         
-        decision = evaluation.get('decision', 'NEW_HYPOTHESIS')
-        self.log(f"Evaluation decision: {decision}")
+        self.log(f"Generated analysis for: {expression[:60]}...")
         
         return {
             'success': True,
-            'evaluation': evaluation,
+            'analysis': analysis,
             'error': None
         }
     
-    def _fallback_evaluation(self, result, iteration: int) -> Dict[str, Any]:
+    def _fallback_analysis(self, expression: str, result) -> Dict[str, Any]:
         """
-        基于规则的 fallback 评估
-        当 LLM 失败时使用
+        Fallback 分析（当 LLM 失败时）
         """
-        self.log("Using fallback rule-based evaluation")
+        self.log("Using fallback analysis")
         
-        # 规则基础的决策（使用 WorldQuant 标准）
-        if result.passes_criteria(min_sharpe=1.25, min_fitness=1.0, max_turnover=0.7, min_turnover=0.01):
-            decision = "ACCEPT"
-            analysis = f"✅ Meets ALL WorldQuant criteria: Sharpe={result.sharpe:.3f}, Fitness={result.fitness:.3f}"
-        elif result.is_hopeful(min_sharpe=0.5, min_fitness=0.6) and iteration < 3:
-            decision = "OPTIMIZE"
-            analysis = f"🔧 Hopeful alpha worth optimizing: Sharpe={result.sharpe:.3f}, Fitness={result.fitness:.3f}"
-        else:
-            decision = "NEW_HYPOTHESIS"
-            if not result.success:
-                analysis = f"❌ Failed with error: {result.error_message}"
-            else:
-                analysis = f"🔄 Below hopeful threshold (Sharpe={result.sharpe:.3f}, Fitness={result.fitness:.3f}), needs new approach"
-        
-        evaluation = {
-            'decision': decision,
-            'analysis': analysis,
-            'strengths': [],
-            'weaknesses': [],
-            'recommendation': f"Proceed with {decision}"
+        analysis = {
+            'economic_rationale': f"Expression uses {expression.split('(')[0]} operator to capture market patterns",
+            'signal_mechanism': "Generates trading signals based on the evaluated expression",
+            'strengths': [f"Sharpe: {result.sharpe:.3f}", f"Turnover: {result.turnover:.3f}"],
+            'weaknesses': ["Needs detailed analysis"],
+            'optimization_suggestions': [
+                {
+                    'direction': 'Add standardization',
+                    'expression_example': f'rank({expression})'
+                }
+            ]
         }
         
         return {
             'success': True,
-            'evaluation': evaluation,
+            'analysis': analysis,
             'error': None
         }
 

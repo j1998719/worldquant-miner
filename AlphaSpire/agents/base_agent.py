@@ -6,6 +6,7 @@ import requests
 import time
 import json
 import logging
+from pathlib import Path
 from typing import Dict, List, Optional, Any
 from abc import ABC, abstractmethod
 
@@ -145,4 +146,90 @@ class BaseAgent(ABC):
         """记录日志"""
         log_func = getattr(logger, level, logger.info)
         log_func(f"[{self.name}] {message}")
+    
+    @staticmethod
+    def format_operators_list(operators_data: List[Dict]) -> str:
+        """
+        格式化 operators 列表为详细的文本
+        
+        Args:
+            operators_data: operators.json 的完整数据
+        
+        Returns:
+            格式化的 operators 文本
+        """
+        if not operators_data:
+            return "No operators available"
+        
+        text = f"=== Available Operators ({len(operators_data)} total) ===\n"
+        text += "Each operator with its definition and parameters:\n\n"
+        
+        for op in operators_data:
+            name = op.get('name', 'unknown')
+            definition = op.get('definition', name)
+            description = op.get('description', '')
+            
+            text += f"- {definition}"
+            if description:
+                text += f"\n  Description: {description}"
+            text += "\n"
+        
+        return text
+    
+    @staticmethod
+    def format_fields_list(fields_data: List[Dict], dataset_names: List[str] = None) -> str:
+        """
+        格式化 fields 列表为详细的文本
+        
+        Args:
+            fields_data: fields 的完整数据列表
+            dataset_names: 数据集名称列表（如 ['pv1', 'pv3']）
+        
+        Returns:
+            格式化的 fields 文本
+        """
+        if not fields_data:
+            return "No fields available"
+        
+        text = f"=== Available Fields ({len(fields_data)} total"
+        if dataset_names:
+            text += f" from datasets: {', '.join(dataset_names)}"
+        text += ") ===\n"
+        
+        # 按数据集分组（如果有 dataset 信息）
+        by_dataset = {}
+        no_dataset = []
+        
+        for field in fields_data:
+            dataset_obj = field.get('dataset', None)
+            if dataset_obj:
+                # dataset 是一个 dict，提取其 id
+                dataset_id = dataset_obj.get('id', None) if isinstance(dataset_obj, dict) else dataset_obj
+                if dataset_id:
+                    if dataset_id not in by_dataset:
+                        by_dataset[dataset_id] = []
+                    by_dataset[dataset_id].append(field)
+                else:
+                    no_dataset.append(field)
+            else:
+                no_dataset.append(field)
+        
+        # 按数据集显示
+        for dataset, dataset_fields in sorted(by_dataset.items()):
+            text += f"\n--- {dataset.upper()} Fields ({len(dataset_fields)} fields) ---\n"
+            field_names = [f.get('id', f.get('name', 'unknown')) for f in dataset_fields]
+            # 分行显示，每行20个
+            for i in range(0, len(field_names), 20):
+                batch = field_names[i:i+20]
+                text += f"  {', '.join(batch)}\n"
+        
+        # 如果有未分类的字段
+        if no_dataset:
+            text += f"\n--- Other Fields ({len(no_dataset)} fields) ---\n"
+            field_names = [f.get('id', f.get('name', 'unknown')) for f in no_dataset]
+            for i in range(0, len(field_names), 20):
+                batch = field_names[i:i+20]
+                text += f"  {', '.join(batch)}\n"
+        
+        return text
 

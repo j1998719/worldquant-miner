@@ -28,7 +28,7 @@ class SimulationSettings:
     maxTrade: str = "OFF"
     language: str = "FASTEXPR"
     visualization: bool = False
-    testPeriod: str = "P5Y0M0D"
+    testPeriod: str = "P1Y0M0D"
 
 
 @dataclass
@@ -195,6 +195,40 @@ class WorldQuantAPI:
                         alpha_id = data.get('alpha')
                         is_data = data.get('is', {})
                         
+                        # CRITICAL: 如果 simulation endpoint 没有返回 'is' 数据
+                        # 需要用 alpha_id 去 /alphas/{id} endpoint 查询
+                        if not is_data or 'sharpe' not in is_data:
+                            if not alpha_id:
+                                logger.error("No alpha_id in response")
+                                return None
+                            
+                            # 用 alpha_id 获取详细信息
+                            logger.info(f"⏳ Fetching performance metrics for alpha {alpha_id}...")
+                            try:
+                                alpha_response = self.sess.get(f'https://api.worldquantbrain.com/alphas/{alpha_id}')
+                                
+                                if alpha_response.status_code == 200:
+                                    alpha_data = alpha_response.json()
+                                    is_data = alpha_data.get('is', {})
+                                    
+                                    if is_data and 'sharpe' in is_data:
+                                        # 成功获取性能数据！
+                                        logger.info(f"✅ Got performance metrics")
+                                    else:
+                                        # 性能数据还未准备好，继续等待
+                                        time.sleep(5)
+                                        continue
+                                else:
+                                    logger.error(f"Failed to fetch alpha details: {alpha_response.status_code}")
+                                    time.sleep(5)
+                                    continue
+                            
+                            except Exception as e:
+                                logger.error(f"Error fetching alpha details: {e}")
+                                time.sleep(5)
+                                continue
+                        
+                        # Now we have the performance metrics!
                         result = AlphaResult(
                             alpha_id=alpha_id,
                             expression=expression,

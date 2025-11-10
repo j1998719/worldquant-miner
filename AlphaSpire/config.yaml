@@ -20,12 +20,10 @@ worldquant_region: "USA"          # Options: USA, GLB, EUR, ASI, CHN
 worldquant_universe: "TOP3000"    # Options: TOP3000, TOP2000U, etc.
 
 # --- Dataset from WorldQuant Brain
+# LLM will read COMPLETE content of these datasets for better field selection
 enabled_field_datasets: # Select the field database you want to use to build alphas.
-  - pv1                 # Database name reference ./data/wq_fields
-  - fundamental6
-  - analyst4
-  - model16
-  - news12
+  - pv1                 # Price/Volume data (Database name reference ./data/wq_fields)
+  - pv13                # Additional Price/Volume data (pv3 不存在，使用 pv13)
 
 # --- Alpha Success Criteria ---
 # Based on WorldQuant Brain's grading system
@@ -34,7 +32,3 @@ min_fitness: 1.0          # Minimum fitness score (WorldQuant's LOW_FITNESS thre
 max_turnover: 0.7         # Maximum turnover allowed (WorldQuant's HIGH_TURNOVER limit)
 min_turnover: 0.01        # Minimum turnover required (WorldQuant's LOW_TURNOVER limit)
 min_returns: 0.0          # Minimum returns required
-
-# Optimization thresholds (for "hopeful" alphas worth optimizing)
-optimize_min_sharpe: 0.5  # Try to optimize if Sharpe >= 0.5
-optimize_min_fitness: 0.6 # Try to optimize if Fitness >= 0.6

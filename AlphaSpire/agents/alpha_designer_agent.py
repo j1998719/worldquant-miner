@@ -2,6 +2,8 @@
 Alpha Designer Agent
 负责根据假设设计 Alpha 表达式
 """
+import json
+from pathlib import Path
 from typing import Dict, Any, List
 from .base_agent import BaseAgent
 
@@ -66,8 +68,9 @@ Example:
         Args:
             context: {
                 'hypothesis': Dict,  # 投资假设
-                'available_operators': List[str],  # 可用操作符
-                'available_fields': List[str],  # 可用字段
+                'operators_data': List[Dict],  # 完整的 operators 数据
+                'fields_data': List[Dict],  # 完整的 fields 数据
+                'enabled_datasets': List[str],  # 启用的数据集
                 'previous_attempts': List[str],  # 之前尝试的表达式（可选）
             }
         
@@ -79,8 +82,6 @@ Example:
             }
         """
         hypothesis = context.get('hypothesis', {})
-        available_operators = context.get('available_operators', [])
-        available_fields = context.get('available_fields', [])
         previous_attempts = context.get('previous_attempts', [])
         
         if not hypothesis:
@@ -90,23 +91,50 @@ Example:
                 'error': 'No hypothesis provided'
             }
         
-        # 限制操作符和字段列表长度（避免 token 溢出）
-        operators_sample = available_operators[:50] if len(available_operators) > 50 else available_operators
-        fields_sample = available_fields[:100] if len(available_fields) > 100 else available_fields
+        # 加载 hopeful_alphas.json（成功案例参考）
+        hopeful_alphas_text = self._load_hopeful_alphas()
+        
+        # 获取完整的 operators 和 fields 数据
+        operators_data = context.get('operators_data', [])
+        fields_data = context.get('fields_data', [])
+        enabled_datasets = context.get('enabled_datasets', [])
+        
+        # 格式化完整的 operators 和 fields
+        ops_text = self.format_operators_list(operators_data) if operators_data else ""
+        fields_text = self.format_fields_list(fields_data, enabled_datasets) if fields_data else ""
+        
+        # 从 hypothesis 提取 recommended 信息
+        hyp_text = hypothesis.get('hypothesis', '')
+        hyp_operators = hypothesis.get('recommended_operators', [])
+        hyp_fields = hypothesis.get('recommended_fields', [])
+        hyp_params = hypothesis.get('recommended_params', {})
         
         # 构建 prompt
-        prompt = f"""Hypothesis: {hypothesis.get('hypothesis', '')}
-Rationale: {hypothesis.get('rationale', '')}
-Expected Signal: {hypothesis.get('expected_signal', '')}
+        prompt = f"""=== Current Hypothesis ===
+{hyp_text}
 
-Available Operators (use ONLY these):
-{', '.join(operators_sample)}
+Recommended Operators: {', '.join(hyp_operators) if hyp_operators else 'Any'}
+Recommended Fields: {', '.join(hyp_fields) if hyp_fields else 'Any'}
+Recommended Params: {', '.join([f'{k}={v}' for k, v in hyp_params.items()]) if hyp_params else 'Any'}
 
-Available Fields (sample, use ONLY these):
-{', '.join(fields_sample[:30])}  # 只显示前30个字段示例
-... and {len(fields_sample) - 30} more
+{hopeful_alphas_text}
 
-Design a valid FastExpr alpha expression that tests this hypothesis."""
+{ops_text}
+
+CRITICAL: Each operator requires EXACT number of parameters!
+Examples:
+- ts_corr(x, y, d) - needs 3 parameters (two series, one lookback period)
+- ts_delta(x, d) - needs 2 parameters (series, lookback period)
+- rank(x) - needs 1 parameter
+- decay(x, d) - needs 2 parameters (series, decay period)
+
+{fields_text}
+
+PRIORITY: Use fields from hypothesis.recommended_fields if possible.
+PRIORITY: Use operators from hypothesis.recommended_operators if possible.
+
+Design a valid FastExpr alpha expression that tests this hypothesis.
+VERIFY that all operators have correct number of parameters before outputting."""
         
         if previous_attempts:
             prompt += f"\n\nPrevious attempts (design something DIFFERENT):"
@@ -151,4 +179,50 @@ Design a valid FastExpr alpha expression that tests this hypothesis."""
             'alpha_design': alpha_design,
             'error': None
         }
+    
+    def _load_hopeful_alphas(self) -> str:
+        """加载 hopeful_alphas.json 并格式化为 prompt 文本"""
+        hopeful_file = Path(__file__).resolve().parents[1] / "results" / "hopeful_alphas.json"
+        
+        if not hopeful_file.exists():
+            return ""
+        
+        try:
+            with open(hopeful_file, 'r', encoding='utf-8') as f:
+                hopeful_alphas = json.load(f)
+            
+            if not hopeful_alphas:
+                return ""
+            
+            # 格式化为 prompt 文本
+            text = "\n=== SUCCESSFUL ALPHAS (Learn from these patterns) ===\n"
+            for i, alpha in enumerate(hopeful_alphas[-5:], 1):  # 只显示最近 5 个
+                text += f"\n{i}. Expression: {alpha['expression']}\n"
+                text += f"   Sharpe: {alpha['result']['sharpe']:.3f}, Fitness: {alpha['result']['fitness']:.3f}\n"
+                
+                analysis = alpha.get('analysis', {})
+                if analysis:
+                    text += f"   Why it works: {analysis.get('economic_rationale', 'N/A')[:150]}...\n"
+                    
+                    # 显示 recommended operators 和 fields
+                    rec_ops = analysis.get('recommended_operators', [])
+                    rec_fields = analysis.get('recommended_fields', [])
+                    if rec_ops:
+                        text += f"   Used Operators: {', '.join(rec_ops[:5])}\n"
+                    if rec_fields:
+                        text += f"   Used Fields: {', '.join(rec_fields[:5])}\n"
+                    
+                    # 显示优化建议
+                    suggestions = analysis.get('optimization_suggestions', [])
+                    if suggestions:
+                        text += f"   Optimization ideas:\n"
+                        for j, sug in enumerate(suggestions[:2], 1):  # 只显示前 2 个
+                            text += f"      - {sug.get('direction', '')}: {sug.get('expression_example', '')}\n"
+            
+            text += "\nUse these successful patterns to inspire your design!\n"
+            return text
+            
+        except Exception as e:
+            self.log(f"Error loading hopeful_alphas: {e}")
+            return ""
 
