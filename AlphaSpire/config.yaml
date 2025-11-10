@@ -2,9 +2,9 @@
 # Global Configuration File
 # ===============================
 
-# --- Ollama API Settings (替换 OpenAI) ---
+# --- Ollama API Settings ---
 ollama_url: "http://localhost:11434"
-ollama_model: "gemma3:1b"
+ollama_model: "gemma3:1b"  # 推荐使用更强模型: qwen2.5:14b 或 llama3.1:8b
 
 # --- WorldQuant Platform Credentials ---
 worldquant_account: "j1998719@gmail.com"
@@ -26,3 +26,15 @@ enabled_field_datasets: # Select the field database you want to use to build alp
   - analyst4
   - model16
   - news12
+
+# --- Alpha Success Criteria ---
+# Based on WorldQuant Brain's grading system
+min_sharpe: 1.25          # Minimum Sharpe ratio (WorldQuant's LOW_SHARPE threshold)
+min_fitness: 1.0          # Minimum fitness score (WorldQuant's LOW_FITNESS threshold)
+max_turnover: 0.7         # Maximum turnover allowed (WorldQuant's HIGH_TURNOVER limit)
+min_turnover: 0.01        # Minimum turnover required (WorldQuant's LOW_TURNOVER limit)
+min_returns: 0.0          # Minimum returns required
+
+# Optimization thresholds (for "hopeful" alphas worth optimizing)
+optimize_min_sharpe: 0.5  # Try to optimize if Sharpe >= 0.5
+optimize_min_fitness: 0.6 # Try to optimize if Fitness >= 0.6

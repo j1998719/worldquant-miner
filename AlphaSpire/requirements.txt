@@ -1,18 +1,13 @@
 # Core dependencies
-requests>=2.32.0
-beautifulsoup4>=4.13.0
-loguru>=0.7.0
-playwright>=1.55.0
-pandas>=2.3.0
-numpy>=2.2.0
-pyyaml>=6.0.0
+requests>=2.31.0
+pyyaml>=6.0.1
 
-# Machine Learning
-scikit-learn>=1.7.0
-scipy>=1.15.0
-hdbscan>=0.8.40
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
 
-# Utilities
-python-dateutil>=2.9.0
-pytz>=2025.2
-tqdm>=4.67.0
+# Logging
+python-dateutil>=2.8.2
+
+# Optional: for better performance
+ujson>=5.8.0
