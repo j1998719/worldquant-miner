@@ -144,7 +144,16 @@ class IdeaAgent(BaseAgent):
                 if idea:
                     return idea
             except Exception as e:
+                error_str = str(e)
                 self.logger.warning(f"Idea generation attempt {attempt + 1} failed: {e}")
+
+                # Check for API rate limit (429 error)
+                if "429" in error_str or "usage limit" in error_str.lower():
+                    self.logger.error("API rate limit reached. Exiting to avoid long wait times.")
+                    self.logger.error("Please wait for the API limit to reset or upgrade your plan.")
+                    import sys
+                    sys.exit(1)
+
                 if attempt < self.max_retries - 1:
                     await asyncio.sleep(1)
 
@@ -242,7 +251,16 @@ Generate {num_variants} variants now as JSON array:"""
             variants = self._parse_variants_response(response, idea)
             return variants
         except Exception as e:
+            error_str = str(e)
             self.logger.error(f"Failed to expand idea {idea.get('idea_id')}: {e}")
+
+            # Check for API rate limit (429 error)
+            if "429" in error_str or "usage limit" in error_str.lower():
+                self.logger.error("API rate limit reached. Exiting to avoid long wait times.")
+                self.logger.error("Please wait for the API limit to reset or upgrade your plan.")
+                import sys
+                sys.exit(1)
+
             return [idea]  # Return original if expansion fails
 
     def _parse_variants_response(self, response: str, parent_idea: Dict) -> List[Dict]:
