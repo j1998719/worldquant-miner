@@ -1,0 +1,116 @@
+You are a WorldQuant Brain alpha expression expert. Your task is to convert an alpha hypothesis into {NUM_EXPRESSIONS} executable FASTEXPR formulas.
+
+================================================================================
+ALPHA HYPOTHESIS
+================================================================================
+
+Hypothesis: {HYPOTHESIS}
+Rationale: {RATIONALE}
+Required Datasets: {DATASETS}
+
+================================================================================
+WORLDQUANT BRAIN OPERATORS REFERENCE
+================================================================================
+
+{OPERATORS_REF}
+
+**Additional Important Operators:**
+- ts_product(x, d): Product over past d days
+- ts_ir(x, d): Information ratio over past d days
+- ts_skewness(x, d): Skewness over past d days
+- ts_kurtosis(x, d): Kurtosis over past d days
+- group_rank(x, group): Rank within industry/sector group
+- group_neutralize(x, group): Neutralize to group mean
+
+**Universe/Filter Functions:**
+- adv20 > X: Liquidity filter (average daily volume over 20 days)
+- market_cap > X: Market cap filter
+- sector: Industry classification
+
+================================================================================
+EXPRESSION GENERATION REQUIREMENTS
+================================================================================
+
+1. **Valid Syntax**: Use only FASTEXPR operators
+2. **No Look-Ahead Bias**: Always use delay() when referencing past prices in calculations
+3. **Normalization**: Output should be cross-sectionally normalized (rank, scale, zscore)
+4. **Reasonable Complexity**: Aim for interpretable formulas (3-7 operations)
+5. **Variation**: Generate {NUM_EXPRESSIONS} distinct implementations varying:
+   - Time horizons (short-term: 5-20 days, medium: 20-60, long: 60-252)
+   - Normalization methods (rank, zscore, scale)
+   - Combination approaches (ratios, differences, correlations)
+
+================================================================================
+COMMON PATTERNS AND EXAMPLES
+================================================================================
+
+**Momentum Patterns:**
+- Simple: rank(ts_sum(close/delay(close, 1) - 1, 20))
+- Vol-adjusted: rank(ts_sum(returns, 20) / ts_std(returns, 20))
+- Relative: rank(close/ts_mean(close, 60) - 1)
+
+**Mean Reversion:**
+- Price-based: -rank(ts_delta(close, 5))
+- Volatility: rank(1 / ts_std(returns, 20))
+- Volume-weighted: rank(ts_sum(volume * returns, 10))
+
+**Value Patterns:**
+- Fundamental ratio: rank(fundamental_value / close)
+- Growth-adjusted: rank((earnings_growth / price) * quality_score)
+
+**Cross-Sectional:**
+- Industry-relative: rank(close/group_mean(close, sector) - 1)
+- Size-adjusted: zscore(alpha_signal) * (market_cap > 1e9)
+
+**Combinations:**
+- Momentum + Value: rank(momentum_signal) * rank(value_signal)
+- Conditional: if(volume > ts_mean(volume, 20), momentum, mean_reversion)
+
+================================================================================
+OUTPUT FORMAT
+================================================================================
+
+Respond with VALID JSON only:
+
+{{
+  "expressions": [
+    {{
+      "expression": "rank(ts_sum(close/delay(close, 1) - 1, 20))",
+      "variant_type": "base_momentum",
+      "description": "20-day price momentum, cross-sectionally ranked",
+      "parameters": {{
+        "lookback_window": 20,
+        "delay": 1,
+        "normalization": "rank"
+      }}
+    }},
+    {{
+      "expression": "scale(ts_corr(close, volume, 60))",
+      "variant_type": "price_volume_correlation",
+      "description": "60-day price-volume correlation, scaled to [-1, 1]",
+      "parameters": {{
+        "lookback_window": 60,
+        "normalization": "scale"
+      }}
+    }}
+  ]
+}}
+
+================================================================================
+VALIDATION CHECKLIST
+================================================================================
+
+Before finalizing each expression, verify:
+- [ ] All parentheses are balanced
+- [ ] delay() is used when comparing different time points
+- [ ] Output is normalized (rank/scale/zscore at top level)
+- [ ] No undefined operators or data fields
+- [ ] Lookback windows are reasonable (1-252 days)
+- [ ] Expression complexity is moderate (avoid deep nesting)
+
+================================================================================
+GENERATE EXPRESSIONS
+================================================================================
+
+Generate {NUM_EXPRESSIONS} WorldQuant Brain expressions for the hypothesis above.
+Output ONLY valid JSON as specified.

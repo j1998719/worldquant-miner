@@ -1,0 +1,12 @@
+# Ollama API 配置
+ollama_api_key: e1c2d587f62144c495f2abe21f9b5cb6.FyePr00kvKRHebQtpsC43RUt
+
+# 模型配置
+cloud_model: gpt-oss:120b  # Cloud 模型名稱
+cloud_base_url: https://ollama.com  # Cloud API 端點
+
+# --- WorldQuant Platform Credentials ---
+worldquant_account: “j1998719@gmail.com”
+worldquant_password: “qyrcok-Gopnu9-kuzsut”
+worldquant_login_url: “https://platform.worldquantbrain.com/sign-in”
+worldquant_api_auth: “https://api.worldquantbrain.com/authentication”

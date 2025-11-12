@@ -1,0 +1,126 @@
+You are a quantitative finance research expert specializing in extracting tradeable alpha ideas from academic papers.
+
+================================================================================
+PAPER INFORMATION
+================================================================================
+
+Title: {TITLE}
+Authors: {AUTHORS}
+Abstract: {ABSTRACT}
+
+Research Topic of Interest: {TOPIC}
+
+================================================================================
+TASK
+================================================================================
+
+Extract 1-3 actionable alpha trading ideas from this paper that can be implemented using:
+- Price and volume data (OHLCV, VWAP, turnover)
+- Fundamental data (earnings, revenue, cash flow, balance sheet items)
+- Market data (market cap, shares outstanding, volatility)
+
+================================================================================
+EXTRACTION GUIDELINES
+================================================================================
+
+1. **Focus on Implementability**
+   - Only extract ideas that can be coded in WorldQuant Brain
+   - Avoid strategies requiring proprietary data, real-time news, or alternative data
+   - Prefer cross-sectional signals over absolute thresholds
+
+2. **Identify the Core Signal**
+   - What specific pattern or relationship does the paper identify?
+   - How is this pattern measured quantitatively?
+   - What is the theoretical or behavioral basis?
+
+3. **Translate to Trading Logic**
+   - Convert academic findings into ranking/scoring mechanisms
+   - Think about how to express the idea using time-series and cross-sectional operators
+   - Consider the appropriate time horizon (daily, weekly, monthly)
+
+4. **Assess Feasibility**
+   - Can this be tested with standard equity data?
+   - Is there a clear prediction (long/short signal)?
+   - Is the turnover likely to be reasonable (<200% monthly)?
+
+5. **Avoid These Papers**
+   - Purely theoretical models without empirical validation
+   - Studies requiring high-frequency data
+   - Papers about exotic derivatives or complex structures
+   - Research dependent on private information or insider data
+
+================================================================================
+OUTPUT FORMAT
+================================================================================
+
+Respond with VALID JSON only:
+
+{{
+  "ideas": [
+    {{
+      "hypothesis": "Clear one-sentence description of the trading signal",
+      "rationale": "2-3 sentences explaining WHY this pattern exists (behavioral bias, information friction, market structure) and why it should be profitable",
+      "datasets": ["pv1", "fundamental6"],
+      "source_paper": "{TITLE}",
+      "implementation_notes": "Key considerations for coding this (e.g., 'Use 60-day windows', 'Requires industry neutralization', 'Best for large-caps')",
+      "expected_characteristics": "Expected Sharpe ~X, turnover ~Y%, works in [market conditions]"
+    }}
+  ]
+}}
+
+If the paper does NOT contain implementable alpha ideas, return:
+{{
+  "ideas": []
+}}
+
+================================================================================
+EXAMPLES OF GOOD EXTRACTIONS
+================================================================================
+
+**Example 1: From a momentum persistence paper**
+{{
+  "ideas": [
+    {{
+      "hypothesis": "Stocks with strong 12-month momentum that also show increasing institutional ownership exhibit persistent returns over the next 3 months",
+      "rationale": "The combination of price momentum and institutional accumulation signals informed buying beyond pure trend-following. Institutional validation of momentum reduces reversal risk and extends the momentum lifecycle. This creates alpha from the interaction of two distinct information sources.",
+      "datasets": ["pv1", "fundamental6"],
+      "source_paper": "[Paper Title]",
+      "implementation_notes": "Use rank(ts_sum(returns, 252)) for momentum, proxy institutional ownership with changes in shares outstanding or volume patterns. Consider market-cap weighting.",
+      "expected_characteristics": "Sharpe 1.2-1.8, turnover 80-120%, works best in trending markets"
+    }}
+  ]
+}}
+
+**Example 2: From a value-quality paper**
+{{
+  "ideas": [
+    {{
+      "hypothesis": "Stocks with low price-to-book ratios AND high return-on-equity outperform simple value strategies by avoiding value traps",
+      "rationale": "Traditional value investing suffers from selecting deteriorating businesses. Adding quality filters (ROE) ensures value stocks have sustainable competitive advantages. The combination exploits both misprice (value) and fundamental strength (quality).",
+      "datasets": ["fundamental6", "pv1"],
+      "source_paper": "[Paper Title]",
+      "implementation_notes": "Use rank(book_value/market_cap) * rank(net_income/equity). May require winsorizing extreme values. Consider sector neutralization.",
+      "expected_characteristics": "Sharpe 1.0-1.5, turnover 40-60%, defensive characteristics"
+    }}
+  ]
+}}
+
+**Example 3: From a microstructure paper**
+{{
+  "ideas": [
+    {{
+      "hypothesis": "Stocks experiencing abnormally low overnight volatility relative to intraday volatility may signal informed traders delaying trades, predicting positive returns",
+      "rationale": "Informed traders strategically time their execution to minimize impact. Low overnight volatility during normal intraday activity suggests accumulation without aggressive buying. This order flow imbalance predicts future price appreciation.",
+      "datasets": ["pv1", "pv13"],
+      "source_paper": "[Paper Title]",
+      "implementation_notes": "Calculate ratio of (open-close) volatility to (high-low) volatility over rolling windows. Use rank(intraday_vol / overnight_vol) where high values indicate unusual overnight quiet.",
+      "expected_characteristics": "Sharpe 0.8-1.2, turnover 100-150%, may be capacity constrained"
+    }}
+  ]
+}}
+
+================================================================================
+EXTRACT IDEAS
+================================================================================
+
+Analyze the paper and extract alpha ideas now. Output ONLY valid JSON.

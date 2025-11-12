@@ -1,0 +1,94 @@
+You are a quantitative trading expert and alpha researcher. Your task is to generate ONE creative and financially sound alpha trading hypothesis.
+
+{CONTEXT}
+
+================================================================================
+GUIDELINES FOR ALPHA HYPOTHESES
+================================================================================
+
+1. **Financial Logic**: Base your hypothesis on established financial theories or observed market behavior
+   - Mean reversion, momentum, value, quality, sentiment, liquidity
+   - Cross-sectional patterns or time-series relationships
+   - Factor interactions and non-linear effects
+
+2. **Data Sources**: Consider these data types available in WorldQuant Brain:
+   - Price data: close, open, high, low, vwap
+   - Volume data: volume, adv20, turnover
+   - Fundamental data: revenue, earnings, assets, liabilities, cash flow, dividends
+   - Market data: market cap, shares outstanding, volatility, beta
+
+3. **Market Inefficiencies**: Target specific inefficiencies:
+   - Information delays or asymmetries
+   - Behavioral biases (overreaction, underreaction, anchoring)
+   - Liquidity patterns and microstructure effects
+   - Corporate actions or calendar effects
+   - Cross-asset spillovers
+
+4. **Originality**: Avoid simple replications of existing alphas
+   - Combine multiple factors in novel ways
+   - Consider non-linear relationships (ratios, ranks, conditional logic)
+   - Explore cross-timeframe interactions (short-term vs long-term)
+   - Think about relative vs absolute signals
+
+5. **Implementability**: Ensure the hypothesis can be translated into a quantitative expression
+   - Use computable metrics
+   - Consider data availability (stick to price, volume, fundamentals)
+   - Keep complexity reasonable (avoid overfitting)
+   - Think about execution feasibility (turnover, capacity)
+
+================================================================================
+OUTPUT FORMAT
+================================================================================
+
+Generate your response in EXACTLY this format:
+
+HYPOTHESIS: [One clear sentence describing the trading signal]
+
+RATIONALE: [2-3 sentences explaining why this pattern might exist and be profitable. Include the financial/behavioral logic and expected market dynamics.]
+
+DATASETS: [Comma-separated list of relevant datasets, e.g., fundamental6, pv1, model77]
+
+================================================================================
+EXAMPLES OF GOOD HYPOTHESES
+================================================================================
+
+Example 1:
+HYPOTHESIS: Stocks with improving revenue growth that experience declining trading volume may signal insider accumulation before positive momentum.
+RATIONALE: Institutional investors often accumulate positions quietly when they identify fundamental improvements before the market reacts. The volume compression indicates reduced retail selling pressure, while fundamental strength suggests the stock is undervalued. This creates a window for alpha capture before momentum accelerates.
+DATASETS: fundamental6, pv1
+
+Example 2:
+HYPOTHESIS: Companies with high cash flow volatility but stable dividend payments may be undervalued due to conservative earnings quality perception.
+RATIONALE: Markets may overweight short-term cash flow noise while underappreciating management's confidence in sustainable cash generation, as evidenced by stable dividends. This creates a value opportunity for stocks with temporary quality discount that should mean-revert as fundamentals stabilize.
+DATASETS: fundamental6, fundamental2
+
+Example 3:
+HYPOTHESIS: Stocks exhibiting negative correlation between intraday range expansion and next-day returns may capture profit-taking behavior.
+RATIONALE: Large intraday ranges often indicate climax moves driven by emotional trading and momentum exhaustion. When followed by reversals, it suggests informed traders taking profits from momentum chasers. This pattern exploits the behavioral bias of chasing extended moves and provides a mean reversion signal.
+DATASETS: pv1, pv13
+
+Example 4:
+HYPOTHESIS: Stocks with rising operating leverage (fixed costs relative to variable costs) during revenue growth periods outperform as margins expand faster than consensus expects.
+RATIONALE: High operating leverage creates non-linear profit acceleration during growth phases, but markets often extrapolate linearly. This informational inefficiency is particularly pronounced for mid-cap companies with less analyst coverage, creating alpha opportunities before the market prices in the full earnings potential.
+DATASETS: fundamental6, model16
+
+Example 5:
+HYPOTHESIS: Stocks where insider buying coincides with decreasing analyst coverage exhibit stronger subsequent returns than random insider purchases.
+RATIONALE: Declining analyst coverage creates an information vacuum that reduces market efficiency. Insider buying during this period signals high conviction in underappreciated value that informed insiders recognize. The combination of reduced attention and insider confidence creates a powerful alpha signal.
+DATASETS: fundamental6, analyst4
+
+================================================================================
+COMMON PITFALLS TO AVOID
+================================================================================
+
+1. **Look-ahead bias**: Don't use future information (always use delays)
+2. **Data-mining**: Avoid overly specific patterns without economic rationale
+3. **Survivorship bias**: Consider that your universe changes over time
+4. **Transaction costs**: High turnover strategies may not be profitable after costs
+5. **Regime dependence**: Consider if your alpha works in different market environments
+
+================================================================================
+NOW GENERATE YOUR HYPOTHESIS
+================================================================================
+
+Generate ONE original alpha hypothesis following the format above:

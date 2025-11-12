@@ -1,0 +1,42 @@
+# Logs directory
+logs/
+*.log
+
+# Data directory
+data/
+*.json
+*.csv
+*.pkl
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Credentials (keep config structure but ignore actual credentials)
+config/credentials.json
+
+# Temporary files
+*.tmp
+*.bak
+*.old
+.cache/

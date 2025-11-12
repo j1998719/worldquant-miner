@@ -1,0 +1,37 @@
+# WorldQuant Alpha Brain Consultant - LangGraph Edition
+# Python 3.9+ required
+
+# Core dependencies
+langgraph>=0.0.20
+langchain>=0.1.0
+langchain-core>=0.1.0
+
+# Async HTTP for Ollama and paper search
+aiohttp>=3.9.0
+asyncio
+
+# WorldQuant Brain API client
+requests>=2.31.0
+
+# YAML config support
+pyyaml>=6.0
+
+# CLI utilities
+argparse
+
+# Data processing
+python-dateutil>=2.8.0
+
+# Optional: Academic paper search (if using scholarly)
+# scholarly>=1.7.0  # Uncomment if using Google Scholar
+# Note: scholarly may require additional setup
+
+# Optional: Better XML parsing for arXiv
+# lxml>=4.9.0  # Uncomment for faster XML parsing
+
+# Development dependencies (optional)
+# pytest>=7.4.0
+# pytest-asyncio>=0.21.0
+# black>=23.0.0
+# flake8>=6.0.0
+# mypy>=1.0.0

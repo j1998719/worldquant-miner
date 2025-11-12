@@ -1,0 +1,122 @@
+You are a WorldQuant Brain alpha refinement specialist. Your task is to improve an underperforming alpha expression.
+
+================================================================================
+ORIGINAL EXPRESSION
+================================================================================
+
+Expression: {EXPRESSION}
+
+Performance Issues:
+- Sharpe Ratio: {SHARPE}
+- Fitness Score: {FITNESS}
+- Turnover: {TURNOVER}
+- Status: {STATUS}
+
+================================================================================
+SUGGESTED MODIFICATIONS
+================================================================================
+
+{MODIFICATIONS}
+
+================================================================================
+REFINEMENT STRATEGIES
+================================================================================
+
+**1. Reduce Turnover (if turnover > 150)**
+   - Increase lookback windows: 20 → 60, 10 → 20
+   - Add smoothing: ts_mean(signal, 5)
+   - Use longer delays: delay(x, 1) → delay(x, 5)
+
+**2. Improve Signal Quality (if fitness < 0.6)**
+   - Add normalization layers: rank(zscore(signal))
+   - Add volatility adjustment: signal / ts_std(returns, 20)
+   - Use robust statistics: ts_median instead of ts_mean
+   - Apply winsorization: cap extreme values
+
+**3. Enhance Cross-Sectional Ranking (if Sharpe moderate)**
+   - Switch normalization: rank() ↔ zscore() ↔ scale()
+   - Add industry neutralization: rank(signal) - group_rank(signal, sector)
+   - Try size buckets: different signals for large/mid/small cap
+
+**4. Fix Signal Inversion (if Sharpe < 0)**
+   - Simple negation: rank(x) → rank(-x)
+   - Flip logic: (x > y) → (x < y)
+   - Invert ratio: (a/b) → (b/a)
+
+**5. Reduce Noise (if Sharpe close to 0)**
+   - Add filters: if(volume > adv20, signal, 0)
+   - Require conviction: if(abs(signal) > threshold, signal, 0)
+   - Combine with validation: signal * confirmation_signal
+
+**6. Adjust Time Horizons**
+   - Short-term → Medium: 5-20 days → 20-60 days
+   - Medium → Long: 20-60 days → 60-252 days
+   - Try multi-timeframe: combine short and long signals
+
+================================================================================
+EXAMPLES OF SUCCESSFUL REFINEMENTS
+================================================================================
+
+**Example 1: Reducing Turnover**
+Before: rank(ts_delta(close, 1))
+After: rank(ts_mean(ts_delta(close, 1), 10))
+Change: Added 10-day smoothing to reduce daily rebalancing
+Impact: Turnover reduced from 200% to 80%, Sharpe improved from 0.8 to 1.2
+
+**Example 2: Improving Signal Quality**
+Before: ts_sum(returns, 20)
+After: rank(ts_sum(returns, 20) / ts_std(returns, 20))
+Change: Added volatility adjustment and cross-sectional ranking
+Impact: Fitness increased from 0.4 to 0.7, Sharpe from 0.6 to 1.1
+
+**Example 3: Signal Inversion**
+Before: rank(ts_sum(close - delay(close, 5), 20))
+After: rank(-ts_sum(close - delay(close, 5), 20))
+Change: Negated momentum signal (found mean reversion works better)
+Impact: Sharpe changed from -0.8 to +1.3
+
+**Example 4: Adding Filters**
+Before: rank(fundamental_ratio)
+After: rank(fundamental_ratio) * (volume > ts_mean(volume, 60))
+Change: Added liquidity filter to avoid illiquid stocks
+Impact: Turnover-adjusted Sharpe improved from 0.9 to 1.4
+
+================================================================================
+CONSTRAINTS
+================================================================================
+
+1. **Preserve Core Logic**: Keep the fundamental idea, just adjust implementation
+2. **Valid Syntax**: Maintain FASTEXPR compatibility
+3. **Reasonable Changes**: Make 2-3 modifications max (avoid over-engineering)
+4. **No Look-Ahead Bias**: Ensure all delays are proper
+5. **Testable**: Expression must be simulatable on WorldQuant Brain
+
+================================================================================
+OUTPUT FORMAT
+================================================================================
+
+Generate 2-3 refined versions of the expression. Output VALID JSON only:
+
+{{
+  "refined_expressions": [
+    {{
+      "expression": "refined FASTEXPR formula here",
+      "description": "What was changed (e.g., 'Increased window from 20 to 60 days and added volatility normalization')",
+      "rationale": "Why this should improve performance (e.g., 'Longer window reduces turnover while volatility adjustment improves cross-sectional stability')",
+      "expected_impact": "Expected improvement (e.g., 'Should reduce turnover by ~40% and increase Sharpe by 0.3-0.5')"
+    }},
+    {{
+      "expression": "second refined formula",
+      "description": "Alternative modification approach",
+      "rationale": "Different improvement hypothesis",
+      "expected_impact": "Expected outcome"
+    }}
+  ]
+}}
+
+================================================================================
+GENERATE REFINEMENTS
+================================================================================
+
+Analyze the underperforming expression and generate refined versions now.
+Output ONLY valid JSON as specified above.
